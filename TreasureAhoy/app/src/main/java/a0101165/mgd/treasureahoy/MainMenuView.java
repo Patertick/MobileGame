@@ -11,6 +11,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 // view to use for main menu activity
 public class MainMenuView extends SurfaceView implements Runnable{
@@ -25,10 +26,13 @@ public class MainMenuView extends SurfaceView implements Runnable{
     long mLastFrameTime;
     int mFPS;
 
+    int mScreenWidth;
+    int mScreenHeight;
+
     ArrayList<BaseEntity> mEntities;
 
     // functions
-    public MainMenuView(Context context){
+    public MainMenuView(Context context, int screenWidth, int screenHeight){
         // initialize variables
         super(context);
         mHolder = getHolder();
@@ -36,11 +40,30 @@ public class MainMenuView extends SurfaceView implements Runnable{
         mLastFrameTime = System.currentTimeMillis();
         mEntities = new ArrayList<BaseEntity>();
 
-        // add a base entity
-        //Bitmap bitmap;
-        //BaseEntity temp = new BaseEntity(32, 32, 1, 0,
-        //        null, 64, 64);
-        //mEntities.add(temp);
+        mScreenWidth = screenWidth;
+        mScreenHeight = screenHeight;
+
+        // add entities
+
+        // background should be first in array list as it is behind every other entity
+
+        BackgroundEntity tempBackground = new BackgroundEntity(1, 0,
+                0, 0, mScreenHeight);
+        if(!tempBackground.LoadSprite("water_moving_background.png", getResources()))
+        {
+            Log.d("ERROR", "Could not load background sprite");
+        }
+
+        mEntities.add(tempBackground);
+        // we want player to be last in list to it is drawn on top of every other entity
+
+        PlayerEntity tempPlayer = new PlayerEntity(1, 0, mScreenWidth/2, mScreenHeight/2);
+
+        if(!tempPlayer.LoadSprite("pirate_ship.png", getResources())){
+            Log.d("ERROR", "Could not load player sprite");
+        }
+
+        mEntities.add(tempPlayer);
     }
 
     @Override
@@ -66,7 +89,7 @@ public class MainMenuView extends SurfaceView implements Runnable{
             mCanvas.drawColor(Color.BLACK); // draw background
             // draw the entities
             for(int i = 0; i < mEntities.size(); i++) {
-                mEntities.get(i).Draw();
+                mEntities.get(i).Draw(mCanvas, mPaint, mScreenWidth, mScreenHeight);
             }
 
             mHolder.unlockCanvasAndPost(mCanvas);
@@ -75,7 +98,7 @@ public class MainMenuView extends SurfaceView implements Runnable{
 
     public void ControlFPS() {
         long timeThisFrame = (System.currentTimeMillis() - mLastFrameTime);
-        long timeToSleep = 500 - timeThisFrame; // time to pause between each frame
+        long timeToSleep = 100 - timeThisFrame; // time to pause between each frame
         if(timeThisFrame > 0) {
             mFPS = (int) ( 1000/ timeThisFrame);
         }
@@ -107,9 +130,16 @@ public class MainMenuView extends SurfaceView implements Runnable{
 
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
+        for (int i = 0; i < mEntities.size(); i++) {
+            mEntities.get(i).ToggleMovement(100);
+        }
+
         return true;
     }
 
-    public int GetFPS() { return mFPS; }
-    //public void SetCanvas(Canvas canvas) { mCanvas = canvas; }
+    //public int GetFPS() { return mFPS; }
+    //public void GetScreenDimensions(int width, int height) {
+    //    mScreenWidth = width;
+    //    mScreenHeight = height;
+    //}
 }

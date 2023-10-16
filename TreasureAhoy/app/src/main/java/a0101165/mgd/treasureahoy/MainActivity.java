@@ -21,10 +21,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainMenuView = new MainMenuView(this);
-        setContentView(mainMenuView);
-
-        //ourView = (ImageView) findViewById(R.id.imageView);
 
         // find size of display
         Display display = getWindowManager().getDefaultDisplay();
@@ -32,6 +28,20 @@ public class MainActivity extends AppCompatActivity {
         display.getSize(size);
         screenWidth = size.x;
         screenHeight = size.y;
+
+
+        mainMenuView = new MainMenuView(this, screenWidth, screenHeight);
+        setContentView(mainMenuView);
+
+
+
+
+        //ourView = (ImageView) findViewById(R.id.imageView);
+
+
+
+        // get bitmaps
+
     }
 
     @Override
