@@ -7,6 +7,15 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
+
+
+enum type{
+    bigShark,
+    smallShark,
+    smallObstacle,
+    bigObstacle;
+}
 
 // parent class that all entities in game world are derived from
 public class BaseEntity {
@@ -27,6 +36,9 @@ public class BaseEntity {
 
     boolean mWrapScreen;
     boolean mIsMoving;
+    boolean mIsHidden;
+
+    type mType;
 
     public BaseEntity(int numFrames, int frameNumber, int xPos, int yPos) {
         // set entities values
@@ -34,8 +46,9 @@ public class BaseEntity {
         mNumFrames = numFrames;
         mXPos = xPos;
         mYPos = yPos;
-        mIsMoving = false;
-
+        mIsMoving = true;
+        mIsHidden = true;
+        mMoveSpeed = 100;
 
     }
 
@@ -46,6 +59,14 @@ public class BaseEntity {
                 break;
             case "pirate_ship.png":
                 mBitmap = BitmapFactory.decodeResource(res, R.drawable.pirate_ship);
+                break;
+            case "shark_small.png":
+                mBitmap = BitmapFactory.decodeResource(res, R.drawable.shark_small);
+                mType = type.smallShark;
+                break;
+            case "shark_big.png":
+                mBitmap = BitmapFactory.decodeResource(res, R.drawable.shark_big);
+                mType = type.bigShark;
                 break;
             default:
                 mBitmap = null;
@@ -91,5 +112,21 @@ public class BaseEntity {
             mIsMoving = true;
             mMoveSpeed = newMoveSpeed;
         }
+    }
+
+    public boolean CheckForPlayerCollision(PlayerEntity player) {
+        // check for collision (shark x, y width = 32)
+        if(mXPos + mFrameWidth >= player.mXPos && mXPos <= player.mXPos + mFrameWidth){
+            // collision is possible
+            if(mYPos + mFrameHeight >= player.mYPos && mYPos <= player.mYPos + mFrameHeight){
+                // collision has occurred
+                Log.d("Launch val", "Collision");
+                player.mNotMoving = true;
+                player.mAttachedLaunchObject = (LaunchEntity) this; // give player access to this object
+                return true;
+            }
+        }
+        Log.d("Launch val", "No Collision");
+        return false;
     }
 }

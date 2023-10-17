@@ -31,6 +31,8 @@ public class MainMenuView extends SurfaceView implements Runnable{
 
     ArrayList<BaseEntity> mEntities;
 
+    PlayerEntity mPlayer;
+
     // functions
     public MainMenuView(Context context, int screenWidth, int screenHeight){
         // initialize variables
@@ -55,15 +57,32 @@ public class MainMenuView extends SurfaceView implements Runnable{
         }
 
         mEntities.add(tempBackground);
+
+        LaunchEntity tempLaunch = new LaunchEntity(1, 0, 20, 40, mScreenWidth, mScreenHeight);
+
+        if(!tempLaunch.LoadSprite("shark_small.png", getResources())){
+            Log.d("ERROR", "Could not load shark small sprite");
+        }
+
+        mEntities.add(tempLaunch);
+
+        tempLaunch = new LaunchEntity(1, 0, 100, 40, mScreenWidth, mScreenHeight);
+
+        if(!tempLaunch.LoadSprite("shark_big.png", getResources())){
+            Log.d("ERROR", "Could not load shark big sprite");
+        }
+
+        mEntities.add(tempLaunch);
+
         // we want player to be last in list to it is drawn on top of every other entity
 
-        PlayerEntity tempPlayer = new PlayerEntity(1, 0, mScreenWidth/2, mScreenHeight/2);
+        mPlayer = new PlayerEntity(1, 0, mScreenWidth/2, mScreenHeight/2);
 
-        if(!tempPlayer.LoadSprite("pirate_ship.png", getResources())){
+        if(!mPlayer.LoadSprite("pirate_ship.png", getResources())){
             Log.d("ERROR", "Could not load player sprite");
         }
 
-        mEntities.add(tempPlayer);
+        //mEntities.add(mPlayer);
     }
 
     @Override
@@ -78,9 +97,22 @@ public class MainMenuView extends SurfaceView implements Runnable{
     public void Update() {
         // simulation
         // run update functions of all saved entities
+
+        if(mPlayer.mNotMoving){
+            for(int i = 0; i < mEntities.size(); i++) {
+                mEntities.get(i).ToggleMovement(0);
+            }
+        }
+
         for(int i = 0; i < mEntities.size(); i++) {
             mEntities.get(i).Update();
         }
+        // check for player collision
+        for(int i = 0; i < mEntities.size(); i++) {
+            mEntities.get(i).CheckForPlayerCollision(mPlayer);
+        }
+
+        mPlayer.Update();
     }
 
     public void Draw() {
@@ -91,6 +123,8 @@ public class MainMenuView extends SurfaceView implements Runnable{
             for(int i = 0; i < mEntities.size(); i++) {
                 mEntities.get(i).Draw(mCanvas, mPaint, mScreenWidth, mScreenHeight);
             }
+
+            mPlayer.Draw(mCanvas, mPaint, mScreenWidth, mScreenHeight);
 
             mHolder.unlockCanvasAndPost(mCanvas);
         }
@@ -130,10 +164,16 @@ public class MainMenuView extends SurfaceView implements Runnable{
 
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
-        for (int i = 0; i < mEntities.size(); i++) {
-            mEntities.get(i).ToggleMovement(100);
+        switch(motionEvent.getAction() & MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_DOWN:
+                if(mPlayer.mAttachedLaunchObject != null) {
+                    for (int i = 0; i < mEntities.size(); i++) {
+                        mEntities.get(i).ToggleMovement(100);
+                    }
+                    mPlayer.mAttachedLaunchObject = null; // when launching reset attached object
+                }
+                break;
         }
-
         return true;
     }
 
