@@ -166,6 +166,7 @@ public class MainMenuView extends SurfaceView implements Runnable{
     public boolean onTouchEvent(MotionEvent motionEvent) {
         switch(motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
+
                 if(mPlayer.mAttachedLaunchObject != null) {
                     for (int i = 0; i < mEntities.size(); i++) {
                         mEntities.get(i).ToggleMovement(100);

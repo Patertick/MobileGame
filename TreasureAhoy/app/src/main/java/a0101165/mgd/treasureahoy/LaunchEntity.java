@@ -9,6 +9,8 @@ public class LaunchEntity extends BaseEntity{
     int mScreenHeight;
     int mScreenWidth;
 
+    boolean mHasCollided;
+
 
 
 
@@ -18,7 +20,7 @@ public class LaunchEntity extends BaseEntity{
         mScreenWidth = screenWidth;
         mScreenHeight = screenHeight;
 
-
+        mHasCollided = false;
         Random rand = new Random();
         mXPos = (rand.nextInt(mScreenWidth - 160)) + 80;
     }

@@ -116,14 +116,20 @@ public class BaseEntity {
 
     public boolean CheckForPlayerCollision(PlayerEntity player) {
         // check for collision (shark x, y width = 32)
+        if(player.mState == State.Attached) return false; // if attached, do not check collisions (would be unfair to die whilst not in control)
         if(mXPos + mFrameWidth >= player.mXPos && mXPos <= player.mXPos + mFrameWidth){
             // collision is possible
             if(mYPos + mFrameHeight >= player.mYPos && mYPos <= player.mYPos + mFrameHeight){
                 // collision has occurred
-                Log.d("Launch val", "Collision");
-                player.mNotMoving = true;
-                player.mAttachedLaunchObject = (LaunchEntity) this; // give player access to this object
-                return true;
+                if(!((LaunchEntity) this).mHasCollided) {
+                    Log.d("Launch val", "Collision");
+                    player.mState = State.Attached;
+                    player.mAttachedLaunchObject = (LaunchEntity) this; // give player access to this object
+                    ((LaunchEntity) this).mHasCollided = true;
+                    return true;
+                } else{
+                    return false;
+                }
             }
         }
         Log.d("Launch val", "No Collision");
