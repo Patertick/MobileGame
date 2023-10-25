@@ -50,8 +50,8 @@ public class PlayerEntity extends BaseEntity{
     public void Draw(Canvas canvas, Paint paint, int screenWidth, int screenHeight){
         if(mRotMap == null) return;
         Rect destRect;
-        destRect = new Rect(mXPos, mYPos, mXPos + mFrameWidth,
-                mYPos + mFrameHeight);
+        destRect = new Rect(mXPos + mXDrawOffset, mYPos + mYDrawOffset, mXPos + mFrameWidth + mXDrawOffset,
+                mYPos + mFrameHeight + mYDrawOffset);
         canvas.drawBitmap(mRotMap, mRectToBeDrawn, destRect, paint);
     }
 
@@ -81,34 +81,21 @@ public class PlayerEntity extends BaseEntity{
 
             float yPivot = (float) (mFrameHeight) / 2;
 
-            rotMat.postRotate(mRotateAngle, xPivot, yPivot);
+            rotMat.postRotate(mRotateAngle, mXPos + xPivot, mYPos + yPivot);
 
             double angleInRads = mRotateAngle * (Math.PI / 180.0f);
 
             // trace circle using sin and cos for offset values
-            float xOffset = (float) (Math.sin(angleInRads)) * radius;
+            float xOffset = (float) (Math.sin(-angleInRads + 90.0f)) * radius;
 
-            float yOffset = (float) (Math.cos(angleInRads)) * radius;
+            float yOffset = (float) (Math.cos(-angleInRads + 90.0f)) * radius;
 
-            double intAngle = mRotateAngle % 90.0f;
+            double rotOffset = 32.0f * Math.abs(Math.sin(angleInRads*2));
 
-
-
-            intAngle *= 2.0f; // divide by 90 then multiply by 180 (so multiply by two)
-            intAngle = intAngle * (Math.PI / 180.0f);
-            intAngle = Math.sin(intAngle);
-
-            Log.d("Angle", Double.toString(intAngle));
-            if((mRotateAngle >= 45.0f && mRotateAngle <= 90.0f) || (mRotateAngle >= 135.0f && mRotateAngle <= 180.0f) ||
-                    (mRotateAngle >= 225.0f && mRotateAngle <= 270.0f) || (mRotateAngle >= 315.0f && mRotateAngle <= 360.0f)){
-                mXPos = mXPos + (int) (16.0f * (float)(intAngle));
-                mYPos = mYPos + (int) (16.0f * (float)(intAngle));
-            } else{
-                mXPos = mXPos - (int) (16.0f * (float)(intAngle));
-                mYPos = mYPos - (int) (16.0f * (float)(intAngle));
-            }
-            //mXPos = mOriginX - (int) xOffset;
-            //mYPos = mOriginY - (int) yOffset;
+            mXDrawOffset = (int) -rotOffset;
+            mYDrawOffset = (int) -rotOffset;
+            mXPos = mOriginX - (int) xOffset;
+            mYPos = mOriginY - (int) yOffset;
             //rotMat.postTranslate(mOriginX, mOriginY + mAttachedLaunchObject.mFrameHeight * 2);
 
             mRotMap = Bitmap.createBitmap(mBitmap, 0, 0, mBitmap.getWidth(), mBitmap.getHeight(), rotMat, true);
@@ -116,9 +103,9 @@ public class PlayerEntity extends BaseEntity{
 
             mRotateAngle += mRotateIncrement;
 
-            if(mRotateAngle >= 360.0f)
+            if(mRotateAngle > 360.0f)
             {
-                mRotateAngle = 0.0f;
+                mRotateAngle = mRotateAngle - 360.0f;
             }
 
         }

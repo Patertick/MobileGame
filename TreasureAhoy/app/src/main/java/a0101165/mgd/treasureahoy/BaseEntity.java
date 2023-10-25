@@ -32,6 +32,8 @@ public class BaseEntity {
 
     int mXPos;
     int mYPos;
+    int mXDrawOffset;
+    int mYDrawOffset;
     int mMoveSpeed;
 
     boolean mWrapScreen;
@@ -49,6 +51,8 @@ public class BaseEntity {
         mIsMoving = true;
         mIsHidden = true;
         mMoveSpeed = 100;
+        mXDrawOffset = 0;
+        mYDrawOffset = 0;
 
     }
 
@@ -97,8 +101,10 @@ public class BaseEntity {
             destRect = new Rect(mXPos, mYPos, mXPos + screenWidth,
                     mYPos + screenHeight * 2);
         } else {
-            destRect = new Rect(mXPos, mYPos, mXPos + mFrameWidth,
-                    mYPos + mFrameHeight);
+            destRect = new Rect(mXPos + mXDrawOffset, mYPos + mYDrawOffset, mXPos + mFrameWidth + mXDrawOffset,
+                    mYPos + mFrameHeight + mYDrawOffset);
+            //Log.e("Offset", Integer.toString(mXDrawOffset) + " X");
+           //Log.e("Offset", Integer.toString(mYDrawOffset) + " Y");
         }
         // draw bitmap using dest rect
         canvas.drawBitmap(mBitmap, mRectToBeDrawn, destRect, paint);
