@@ -13,22 +13,19 @@ public class BackgroundEntity extends BaseEntity{
         mWrapScreen = true;
         mYPos = -mScreenHeight; // y and x for background should always be 0
         mXPos = 0;
-
-        mMoveSpeed = 50;
     }
 
     @Override
     public void Update() {
-        if(mIsMoving) {
-            // move background
-            mYPos += mMoveSpeed;
-
-            // reset once it reaches end of sprite
-            if (mYPos >= 0) {
-                mYPos = -mScreenHeight;
-            }
+        super.Update();
+        // move background
+        mYPos += mMoveSpeed;
+        // reset once it reaches end of sprite
+        if (mYPos >= 0) {
+            mYPos = -mScreenHeight;
         }
     }
+
 
 
 }

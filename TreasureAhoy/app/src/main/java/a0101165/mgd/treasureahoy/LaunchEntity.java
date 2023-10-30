@@ -27,14 +27,15 @@ public class LaunchEntity extends BaseEntity{
 
     @Override
     public void Update(){
-        if(mIsMoving) {
-            mYPos += mMoveSpeed;
-            if (mYPos >= mScreenHeight) {
-                mYPos = 0;
-                Random rand = new Random();
-                mXPos = (rand.nextInt(mScreenWidth - 160)) + 80;
-            }
+        super.Update();
+        mYPos += mMoveSpeed;
+        if (mYPos >= mScreenHeight) {
+            mYPos = 0;
+            Random rand = new Random();
+            mXPos = (rand.nextInt(mScreenWidth - 160)) + 80;
+            mHasCollided = false;
         }
+
     }
 
 

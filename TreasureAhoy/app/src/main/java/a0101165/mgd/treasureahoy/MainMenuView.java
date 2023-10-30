@@ -45,6 +45,8 @@ public class MainMenuView extends SurfaceView implements Runnable{
         mScreenWidth = screenWidth;
         mScreenHeight = screenHeight;
 
+
+
         // add entities
 
         // background should be first in array list as it is behind every other entity
@@ -82,6 +84,8 @@ public class MainMenuView extends SurfaceView implements Runnable{
             Log.d("ERROR", "Could not load player sprite");
         }
 
+        mPlayer.SetScreenWidth(mScreenWidth);
+
         //mEntities.add(mPlayer);
     }
 
@@ -97,22 +101,23 @@ public class MainMenuView extends SurfaceView implements Runnable{
     public void Update() {
         // simulation
         // run update functions of all saved entities
+        // check for player collision
+        // do player update first
+        mPlayer.Update();
+        for(int i = 0; i < mEntities.size(); i++) {
+            if(mEntities.get(i) == mPlayer) continue;
 
-        if(mPlayer.mNotMoving){
-            for(int i = 0; i < mEntities.size(); i++) {
-                mEntities.get(i).ToggleMovement(0);
+            // if player moveSpeed is minus or 0, set all other move speeds to 0
+            if(mPlayer.GetVelocityY() <= 0) mEntities.get(i).SetMoveSpeed(0);
+            else mEntities.get(i).SetMoveSpeed((int)(mPlayer.GetVelocityY()));
+
+            mEntities.get(i).Update();
+            // don't check player against player
+            if(mEntities.get(i).CheckForPlayerCollision(mPlayer)){
+                // we hit an object
             }
         }
 
-        for(int i = 0; i < mEntities.size(); i++) {
-            mEntities.get(i).Update();
-        }
-        // check for player collision
-        for(int i = 0; i < mEntities.size(); i++) {
-            mEntities.get(i).CheckForPlayerCollision(mPlayer);
-        }
-
-        mPlayer.Update();
     }
 
     public void Draw() {
@@ -168,8 +173,12 @@ public class MainMenuView extends SurfaceView implements Runnable{
             case MotionEvent.ACTION_DOWN:
 
                 if(mPlayer.mAttachedLaunchObject != null) {
+                    if(mPlayer.mAttachedLaunchObject.mType == type.bigShark) mPlayer.SetVelocity(200);
+                    else if(mPlayer.mAttachedLaunchObject.mType == type.smallShark) mPlayer.SetVelocity(100);
+
+                    mPlayer.SetState(State.Moving);
                     for (int i = 0; i < mEntities.size(); i++) {
-                        mEntities.get(i).ToggleMovement(100);
+                        mEntities.get(i).SetMoveSpeed(mPlayer.GetVelocityY());
                     }
                     mPlayer.mAttachedLaunchObject = null; // when launching reset attached object
                 }

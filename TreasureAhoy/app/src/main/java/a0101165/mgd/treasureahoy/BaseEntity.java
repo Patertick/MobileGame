@@ -32,8 +32,6 @@ public class BaseEntity {
 
     int mXPos;
     int mYPos;
-    int mXDrawOffset;
-    int mYDrawOffset;
     int mMoveSpeed;
 
     boolean mWrapScreen;
@@ -48,11 +46,8 @@ public class BaseEntity {
         mNumFrames = numFrames;
         mXPos = xPos;
         mYPos = yPos;
-        mIsMoving = true;
         mIsHidden = true;
-        mMoveSpeed = 100;
-        mXDrawOffset = 0;
-        mYDrawOffset = 0;
+        mMoveSpeed = 0;
 
     }
 
@@ -90,6 +85,7 @@ public class BaseEntity {
 
     public void Update() {
         // do something
+
     }
 
     public void Draw(Canvas canvas, Paint paint, int screenWidth, int screenHeight) {
@@ -101,8 +97,8 @@ public class BaseEntity {
             destRect = new Rect(mXPos, mYPos, mXPos + screenWidth,
                     mYPos + screenHeight * 2);
         } else {
-            destRect = new Rect(mXPos + mXDrawOffset, mYPos + mYDrawOffset, mXPos + mFrameWidth + mXDrawOffset,
-                    mYPos + mFrameHeight + mYDrawOffset);
+            destRect = new Rect(mXPos, mYPos, mXPos + mFrameWidth,
+                    mYPos + mFrameHeight);
             //Log.e("Offset", Integer.toString(mXDrawOffset) + " X");
            //Log.e("Offset", Integer.toString(mYDrawOffset) + " Y");
         }
@@ -111,25 +107,23 @@ public class BaseEntity {
     }
 
 
-    public void ToggleMovement(int newMoveSpeed) {
-        if(mIsMoving) {
-            mIsMoving = false;
-        } else {
-            mIsMoving = true;
-            mMoveSpeed = newMoveSpeed;
-        }
+    public void SetMoveSpeed(int newMoveSpeed) {
+        mMoveSpeed = newMoveSpeed;
     }
+
 
     public boolean CheckForPlayerCollision(PlayerEntity player) {
         // check for collision (shark x, y width = 32)
-        if(player.mState == State.Attached) return false; // if attached, do not check collisions (would be unfair to die whilst not in control)
+        if(player.mState == State.Attached || player.mState == State.Dead) return false; // if attached, do not check collisions (would be unfair to die whilst not in control)
         if(mXPos + mFrameWidth >= player.mXPos && mXPos <= player.mXPos + mFrameWidth){
             // collision is possible
             if(mYPos + mFrameHeight >= player.mYPos && mYPos <= player.mYPos + mFrameHeight){
                 // collision has occurred
                 if(!((LaunchEntity) this).mHasCollided) {
                     Log.d("Launch val", "Collision");
+                    mMoveSpeed = 0;
                     player.mState = State.Attached;
+                    player.SetVelocity(0);
                     player.mAttachedLaunchObject = (LaunchEntity) this; // give player access to this object
                     ((LaunchEntity) this).mHasCollided = true;
                     return true;
