@@ -21,20 +21,28 @@ public class LaunchEntity extends BaseEntity{
         mScreenHeight = screenHeight;
 
         mHasCollided = false;
-        Random rand = new Random();
-        mXPos = (rand.nextInt(mScreenWidth - 160)) + 80;
+        SpawnRandomLocation();
     }
 
     @Override
     public void Update(){
         super.Update();
+        if(mIsHidden) return;
         mYPos += mMoveSpeed;
         if (mYPos >= mScreenHeight) {
-            mYPos = 0;
+            mIsHidden = true;
             Random rand = new Random();
+            mYPos = 0;
             mXPos = (rand.nextInt(mScreenWidth - 160)) + 80;
             mHasCollided = false;
         }
+
+    }
+
+    public void SpawnRandomLocation(){
+        Random rand = new Random();
+        mYPos = (rand.nextInt(mScreenHeight - mFrameHeight)) + mFrameHeight;
+        mXPos = (rand.nextInt(mScreenWidth - 160)) + 80;
 
     }
 

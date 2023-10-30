@@ -11,6 +11,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 // view to use for main menu activity
@@ -29,12 +30,15 @@ public class MainMenuView extends SurfaceView implements Runnable{
     int mScreenWidth;
     int mScreenHeight;
 
+    int mLaunchObjectNumber;
+    int mObstacleObjectNumber;
+
     ArrayList<BaseEntity> mEntities;
 
     PlayerEntity mPlayer;
 
     // functions
-    public MainMenuView(Context context, int screenWidth, int screenHeight){
+    public MainMenuView(Context context, int screenWidth, int screenHeight) {
         // initialize variables
         super(context);
         mHolder = getHolder();
@@ -45,7 +49,8 @@ public class MainMenuView extends SurfaceView implements Runnable{
         mScreenWidth = screenWidth;
         mScreenHeight = screenHeight;
 
-
+        mLaunchObjectNumber = 4;
+        mObstacleObjectNumber = 2;
 
         // add entities
 
@@ -53,40 +58,230 @@ public class MainMenuView extends SurfaceView implements Runnable{
 
         BackgroundEntity tempBackground = new BackgroundEntity(1, 0,
                 0, 0, mScreenHeight);
-        if(!tempBackground.LoadSprite("water_moving_background.png", getResources()))
-        {
+        if (!tempBackground.LoadSprite("water_moving_background.png", getResources())) {
             Log.d("ERROR", "Could not load background sprite");
         }
 
         mEntities.add(tempBackground);
 
-        LaunchEntity tempLaunch = new LaunchEntity(1, 0, 20, 40, mScreenWidth, mScreenHeight);
+        LaunchEntity tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
 
-        if(!tempLaunch.LoadSprite("shark_small.png", getResources())){
+        if (!tempLaunch.LoadSprite("shark_small.png", getResources())) {
             Log.d("ERROR", "Could not load shark small sprite");
         }
 
         mEntities.add(tempLaunch);
 
-        tempLaunch = new LaunchEntity(1, 0, 100, 40, mScreenWidth, mScreenHeight);
+        tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
 
-        if(!tempLaunch.LoadSprite("shark_big.png", getResources())){
+        if (!tempLaunch.LoadSprite("shark_small.png", getResources())) {
+            Log.d("ERROR", "Could not load shark small sprite");
+        }
+
+        mEntities.add(tempLaunch);
+
+        tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
+
+        if (!tempLaunch.LoadSprite("shark_small.png", getResources())) {
+            Log.d("ERROR", "Could not load shark small sprite");
+        }
+
+        mEntities.add(tempLaunch);
+
+        tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
+
+        if (!tempLaunch.LoadSprite("shark_small.png", getResources())) {
+            Log.d("ERROR", "Could not load shark small sprite");
+        }
+
+        mEntities.add(tempLaunch);
+
+        tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
+
+        if (!tempLaunch.LoadSprite("shark_small.png", getResources())) {
+            Log.d("ERROR", "Could not load shark small sprite");
+        }
+
+        mEntities.add(tempLaunch);
+
+        tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
+
+        if (!tempLaunch.LoadSprite("shark_small.png", getResources())) {
+            Log.d("ERROR", "Could not load shark small sprite");
+        }
+
+        mEntities.add(tempLaunch);
+
+        tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
+
+        if (!tempLaunch.LoadSprite("shark_small.png", getResources())) {
+            Log.d("ERROR", "Could not load shark small sprite");
+        }
+
+        mEntities.add(tempLaunch);
+
+        tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
+
+        if (!tempLaunch.LoadSprite("shark_small.png", getResources())) {
+            Log.d("ERROR", "Could not load shark small sprite");
+        }
+
+        mEntities.add(tempLaunch);
+
+        tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
+
+        if (!tempLaunch.LoadSprite("shark_big.png", getResources())) {
             Log.d("ERROR", "Could not load shark big sprite");
+        }
+
+        mEntities.add(tempLaunch);
+
+        tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
+
+        if (!tempLaunch.LoadSprite("shark_big.png", getResources())) {
+            Log.d("ERROR", "Could not load shark big sprite");
+        }
+
+        mEntities.add(tempLaunch);
+
+        tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
+
+        if (!tempLaunch.LoadSprite("shark_big.png", getResources())) {
+            Log.d("ERROR", "Could not load shark big sprite");
+        }
+
+        mEntities.add(tempLaunch);
+
+        tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
+
+        if (!tempLaunch.LoadSprite("shark_big.png", getResources())) {
+            Log.d("ERROR", "Could not load shark big sprite");
+        }
+
+        mEntities.add(tempLaunch);
+
+        tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
+
+        if (!tempLaunch.LoadSprite("shark_big.png", getResources())) {
+            Log.d("ERROR", "Could not load shark big sprite");
+        }
+
+        tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
+
+        if (!tempLaunch.LoadSprite("obstacle_small.png", getResources())) {
+            Log.d("ERROR", "Could not load obstacle small sprite");
+        }
+
+        mEntities.add(tempLaunch);
+
+        tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
+
+        if (!tempLaunch.LoadSprite("obstacle_small.png", getResources())) {
+            Log.d("ERROR", "Could not load obstacle small sprite");
+        }
+
+        mEntities.add(tempLaunch);
+
+        tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
+
+        if (!tempLaunch.LoadSprite("obstacle_small.png", getResources())) {
+            Log.d("ERROR", "Could not load obstacle small sprite");
+        }
+
+        mEntities.add(tempLaunch);
+
+        tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
+
+        if (!tempLaunch.LoadSprite("obstacle_small.png", getResources())) {
+            Log.d("ERROR", "Could not load obstacle small sprite");
+        }
+
+        mEntities.add(tempLaunch);
+
+        tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
+
+        if (!tempLaunch.LoadSprite("obstacle_big.png", getResources())) {
+            Log.d("ERROR", "Could not load obstacle small sprite");
+        }
+
+        mEntities.add(tempLaunch);
+
+        tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
+
+        if (!tempLaunch.LoadSprite("obstacle_big.png", getResources())) {
+            Log.d("ERROR", "Could not load obstacle small sprite");
         }
 
         mEntities.add(tempLaunch);
 
         // we want player to be last in list to it is drawn on top of every other entity
 
-        mPlayer = new PlayerEntity(1, 0, mScreenWidth/2, mScreenHeight/2);
+        mPlayer = new PlayerEntity(1, 0, mScreenWidth / 2, mScreenHeight / 2);
 
-        if(!mPlayer.LoadSprite("pirate_ship.png", getResources())){
+        if (!mPlayer.LoadSprite("pirate_ship.png", getResources())) {
             Log.d("ERROR", "Could not load player sprite");
         }
 
         mPlayer.SetScreenWidth(mScreenWidth);
 
         //mEntities.add(mPlayer);
+
+        for (int i = 0; i < mEntities.size(); i++) {
+            // enforce that only a certain amount of launch objects are visible at once
+            // set all launch & obstacle entities to hidden
+            if (mEntities.get(i).mType == type.bigShark || mEntities.get(i).mType == type.smallShark
+                    || mEntities.get(i).mType == type.bigObstacle || mEntities.get(i).mType == type.smallObstacle) {
+                mEntities.get(i).mIsHidden = true;
+            }
+
+        }
+        // set objects to be visible
+        int numObjectsVisible = 0;
+        while (numObjectsVisible < mLaunchObjectNumber) {
+            Random randInt = new Random();
+            int i = randInt.nextInt(mEntities.size()); // get random entity
+            if ((mEntities.get(i).mType == type.bigShark || mEntities.get(i).mType == type.smallShark) &&
+                    mEntities.get(i).mIsHidden) {
+                // if entity is valid set to visible
+                mEntities.get(i).mIsHidden = false; // set to be visible
+                numObjectsVisible++; // increment value
+                if (mPlayer.mAttachedLaunchObject == null) {
+                    mPlayer.mAttachedLaunchObject = (LaunchEntity) (mEntities.get(i));
+                    if (mEntities.get(i).mType == type.bigShark) mPlayer.mRotateIncrement = 25.0f;
+                    else if (mEntities.get(i).mType == type.smallShark)
+                        mPlayer.mRotateIncrement = 10.0f;
+                    ((LaunchEntity) (mEntities.get(i))).mHasCollided = true;
+                    mEntities.get(i).mXPos = mPlayer.mXPos;
+                    mEntities.get(i).mYPos = mPlayer.mYPos;
+                    mPlayer.mState = State.Attached;
+                    mPlayer.SetVelocity(0);
+                }
+
+            }
+        }
+        numObjectsVisible = 0;
+        while (numObjectsVisible < mObstacleObjectNumber) {
+            Random randInt = new Random();
+            int i = randInt.nextInt(mEntities.size()); // get random entity
+            if ((mEntities.get(i).mType == type.bigObstacle || mEntities.get(i).mType == type.smallObstacle) &&
+                    mEntities.get(i).mIsHidden) {
+                // if entity is valid set to visible
+                mEntities.get(i).mIsHidden = false; // set to be visible
+                numObjectsVisible++; // increment value
+                Log.e("Objects visible", Integer.toString(numObjectsVisible));
+            }
+        }
+        for (int i = 0; i < mEntities.size(); i++) {
+            if ((mEntities.get(i).mType == type.bigShark || mEntities.get(i).mType == type.smallShark) &&
+                    mEntities.get(i).mIsHidden) {
+                // set all hidden objects to top of screen
+                mEntities.get(i).mYPos = 0;
+            } else if ((mEntities.get(i).mType == type.smallObstacle || mEntities.get(i).mType == type.bigObstacle) &&
+                    mEntities.get(i).mIsHidden) {
+                mEntities.get(i).mYPos = 0;
+            }
+
+        }
     }
 
     @Override
@@ -99,13 +294,19 @@ public class MainMenuView extends SurfaceView implements Runnable{
     }
 
     public void Update() {
+        if(mPlayer.mState == State.Dead) return; // do nothing if player is dead
         // simulation
         // run update functions of all saved entities
         // check for player collision
         // do player update first
+        int numLaunchObjectsVisible = 0;
+        int numObstacleObjectsVisible = 0;
         mPlayer.Update();
         for(int i = 0; i < mEntities.size(); i++) {
-            if(mEntities.get(i) == mPlayer) continue;
+            if(mEntities.get(i) == mPlayer || mEntities.get(i).mIsHidden) continue;
+
+            if(mEntities.get(i).mType == type.bigShark || mEntities.get(i).mType == type.smallShark) numLaunchObjectsVisible++;
+            if(mEntities.get(i).mType == type.bigObstacle || mEntities.get(i).mType == type.smallObstacle) numObstacleObjectsVisible++;
 
             // if player moveSpeed is minus or 0, set all other move speeds to 0
             if(mPlayer.GetVelocityY() <= 0) mEntities.get(i).SetMoveSpeed(0);
@@ -115,6 +316,31 @@ public class MainMenuView extends SurfaceView implements Runnable{
             // don't check player against player
             if(mEntities.get(i).CheckForPlayerCollision(mPlayer)){
                 // we hit an object
+            }
+        }
+
+
+        // if our current visible objects falls below set amount, find new random entity to put on screen
+        while(numLaunchObjectsVisible < mLaunchObjectNumber) {
+            Random randInt = new Random();
+            int i = randInt.nextInt(mEntities.size()); // get random entity
+            if ((mEntities.get(i).mType == type.bigShark || mEntities.get(i).mType == type.smallShark) &&
+                    mEntities.get(i).mIsHidden) {
+                // if entity is valid set to visible
+                mEntities.get(i).mIsHidden = false; // set to be visible
+                numLaunchObjectsVisible++; // increment value
+            }
+        }
+
+        while(numObstacleObjectsVisible < mObstacleObjectNumber) {
+            Random randInt = new Random();
+            int i = randInt.nextInt(mEntities.size()); // get random entity
+            if ((mEntities.get(i).mType == type.bigObstacle || mEntities.get(i).mType == type.smallObstacle) &&
+                    mEntities.get(i).mIsHidden) {
+                // if entity is valid set to visible
+                mEntities.get(i).mIsHidden = false; // set to be visible
+                numObstacleObjectsVisible++; // increment value
+                Log.e("Objects visible", Integer.toString(numObstacleObjectsVisible));
             }
         }
 
@@ -173,12 +399,15 @@ public class MainMenuView extends SurfaceView implements Runnable{
             case MotionEvent.ACTION_DOWN:
 
                 if(mPlayer.mAttachedLaunchObject != null) {
-                    if(mPlayer.mAttachedLaunchObject.mType == type.bigShark) mPlayer.SetVelocity(200);
-                    else if(mPlayer.mAttachedLaunchObject.mType == type.smallShark) mPlayer.SetVelocity(100);
+                    if(mPlayer.mAttachedLaunchObject.mType == type.bigShark) mPlayer.SetVelocity(450);
+                    else if(mPlayer.mAttachedLaunchObject.mType == type.smallShark) mPlayer.SetVelocity(250);
 
                     mPlayer.SetState(State.Moving);
-                    for (int i = 0; i < mEntities.size(); i++) {
+                    for (int i = 0; i < mEntities.size(); i++) {;
                         mEntities.get(i).SetMoveSpeed(mPlayer.GetVelocityY());
+
+                        if((mEntities.get(i).mType == type.bigShark || mEntities.get(i).mType == type.smallShark) &&
+                                mEntities.get(i) != mPlayer.mAttachedLaunchObject) ((LaunchEntity) mEntities.get(i)).mHasCollided = false;
                     }
                     mPlayer.mAttachedLaunchObject = null; // when launching reset attached object
                 }

@@ -10,7 +10,6 @@ import android.util.Log;
 import java.util.Random;
 
 enum State {
-    Start,
     Attached,
     Moving,
     Dead
@@ -45,7 +44,6 @@ public class PlayerEntity extends BaseEntity{
 
         mNotMoving = false;
         mAttachedLaunchObject = null;
-        mState = State.Start;
         mOriginX = xPos;
         mOriginY = yPos;
         mXDrawOffset = 0;
@@ -98,7 +96,7 @@ public class PlayerEntity extends BaseEntity{
         mRotMap = Bitmap.createBitmap(mBitmap, 0, 0, mBitmap.getWidth(), mBitmap.getHeight(), rotMat, true);
 
         if(mState == State.Attached && mAttachedLaunchObject != null) { // if attached to a valid object
-            mAttachedLaunchObject.mYPos = mStartY;
+            //mAttachedLaunchObject.mYPos = mStartY;
 
             // Rotate around attached object, turn off collision, stop moving
             mNotMoving = true;
@@ -152,11 +150,6 @@ public class PlayerEntity extends BaseEntity{
 
             if(mVelocityX == 0 && mVelocityY == 0) mState = State.Dead;// if velocity is 0 and ship is in state moving set state to dead
 
-        }
-        else if (mState == State.Start){
-            Random randInt = new Random();
-            SetVelocity(500);
-            mState = State.Moving;
         }
     }
 

@@ -35,7 +35,6 @@ public class BaseEntity {
     int mMoveSpeed;
 
     boolean mWrapScreen;
-    boolean mIsMoving;
     boolean mIsHidden;
 
     type mType;
@@ -46,7 +45,7 @@ public class BaseEntity {
         mNumFrames = numFrames;
         mXPos = xPos;
         mYPos = yPos;
-        mIsHidden = true;
+        mIsHidden = false;
         mMoveSpeed = 0;
 
     }
@@ -66,6 +65,14 @@ public class BaseEntity {
             case "shark_big.png":
                 mBitmap = BitmapFactory.decodeResource(res, R.drawable.shark_big);
                 mType = type.bigShark;
+                break;
+            case "obstacle_small.png":
+                mBitmap = BitmapFactory.decodeResource(res, R.drawable.obstacle_small);
+                mType = type.smallObstacle;
+                break;
+            case "obstacle_big.png":
+                mBitmap = BitmapFactory.decodeResource(res, R.drawable.obstacle_big);
+                mType = type.bigObstacle;
                 break;
             default:
                 mBitmap = null;
@@ -91,7 +98,7 @@ public class BaseEntity {
     public void Draw(Canvas canvas, Paint paint, int screenWidth, int screenHeight) {
         // draw this entity
         // find position of rect to be drawn
-        if(mBitmap == null) return;
+        if(mBitmap == null || mIsHidden) return;
         Rect destRect;
         if(mWrapScreen) {
             destRect = new Rect(mXPos, mYPos, mXPos + screenWidth,
@@ -115,24 +122,40 @@ public class BaseEntity {
     public boolean CheckForPlayerCollision(PlayerEntity player) {
         // check for collision (shark x, y width = 32)
         if(player.mState == State.Attached || player.mState == State.Dead) return false; // if attached, do not check collisions (would be unfair to die whilst not in control)
-        if(mXPos + mFrameWidth >= player.mXPos && mXPos <= player.mXPos + mFrameWidth){
+        if(mXPos + mFrameWidth >= player.mXPos && mXPos <= player.mXPos + player.mFrameWidth){
             // collision is possible
-            if(mYPos + mFrameHeight >= player.mYPos && mYPos <= player.mYPos + mFrameHeight){
+            if(mYPos + mFrameHeight >= player.mYPos && mYPos <= player.mYPos + player.mFrameHeight){
                 // collision has occurred
-                if(!((LaunchEntity) this).mHasCollided) {
-                    Log.d("Launch val", "Collision");
+                if(!((LaunchEntity) this).mHasCollided && (mType == type.bigShark || mType == type.smallShark)) {
                     mMoveSpeed = 0;
                     player.mState = State.Attached;
                     player.SetVelocity(0);
+                    if(mType == type.bigShark) player.mRotateIncrement = 25.0f;
+                    else if(mType == type.smallShark) player.mRotateIncrement = 10.0f;
+
                     player.mAttachedLaunchObject = (LaunchEntity) this; // give player access to this object
                     ((LaunchEntity) this).mHasCollided = true;
                     return true;
-                } else{
+                }
+                else if(mType == type.smallObstacle || mType == type.bigObstacle){
+                    if(mType == type.smallObstacle) {
+                        // reduce velocity when hitting obstacle (small obstacle slows)
+                        player.mVelocityX = (int) (player.mVelocityX * 0.5);
+                        player.mVelocityY = (int) (player.mVelocityY * 0.5);
+                    }
+                    else{
+                        player.mVelocityX = 0;
+                        player.mVelocityY = 0;
+                        player.mState = State.Dead;
+                    }
+                    mYPos = player.mScreenWidth * 2;
+                    return true;
+                }
+                else{
                     return false;
                 }
             }
         }
-        Log.d("Launch val", "No Collision");
         return false;
     }
 }

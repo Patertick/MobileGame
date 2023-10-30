@@ -19,6 +19,7 @@ public class BackgroundEntity extends BaseEntity{
     public void Update() {
         super.Update();
         // move background
+
         mYPos += mMoveSpeed;
         // reset once it reaches end of sprite
         if (mYPos >= 0) {
