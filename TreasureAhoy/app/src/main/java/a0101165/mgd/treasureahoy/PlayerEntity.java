@@ -37,6 +37,8 @@ public class PlayerEntity extends BaseEntity{
     int mVelocityX;
     int mVelocityY;
 
+    boolean mCanDie;
+
     Bitmap mRotMap;
 
     public PlayerEntity(int numFrames, int frameNumber, int xPos, int yPos) {
@@ -49,6 +51,8 @@ public class PlayerEntity extends BaseEntity{
         mXDrawOffset = 0;
         mYDrawOffset = 0;
         mStartY = yPos;
+
+        mCanDie = false;
 
         mVelocityX = 0;
         mVelocityY = 0;
