@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     int screenWidth;
     int screenHeight;
 
-    MainMenuView mainMenuView;
+    DiggingView mainMenuView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         screenHeight = size.y;
 
 
-        mainMenuView = new MainMenuView(this, screenWidth, screenHeight);
+        mainMenuView = new DiggingView(this, screenWidth, screenHeight);
         setContentView(mainMenuView);
 
 

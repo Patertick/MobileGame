@@ -9,7 +9,6 @@ public class BackgroundEntity extends BaseEntity{
     public BackgroundEntity(int numFrames, int frameNumber, int xPos, int yPos, int screenHeight){
         super(numFrames, frameNumber, xPos, yPos);
         mScreenHeight = screenHeight;
-        Log.d("LOG", Integer.toString(screenHeight));
         mWrapScreen = true;
         mYPos = -mScreenHeight; // y and x for background should always be 0
         mXPos = 0;

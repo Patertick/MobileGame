@@ -29,6 +29,8 @@ public class BaseEntity {
     int mFrameWidth;
     int mNumFrames;
     int mFrameNumber;
+    int mDrawScaleX;
+    int mDrawScaleY;
 
     int mXPos;
     int mYPos;
@@ -47,6 +49,8 @@ public class BaseEntity {
         mYPos = yPos;
         mIsHidden = false;
         mMoveSpeed = 0;
+        mDrawScaleX = 0;
+        mDrawScaleY = 0;
 
     }
 
@@ -74,6 +78,24 @@ public class BaseEntity {
                 mBitmap = BitmapFactory.decodeResource(res, R.drawable.obstacle_big);
                 mType = type.bigObstacle;
                 break;
+            case "digging_background.png":
+                mBitmap = BitmapFactory.decodeResource(res, R.drawable.digging_background);
+                break;
+            case "mound_buried.png":
+                mBitmap = BitmapFactory.decodeResource(res, R.drawable.mound_buried);
+                break;
+            case "mound_semiburied_1.png":
+                mBitmap = BitmapFactory.decodeResource(res, R.drawable.mound_semiburied_1);
+                break;
+            case "mound_semiburied_2.png":
+                mBitmap = BitmapFactory.decodeResource(res, R.drawable.mound_semiburied_2);
+                break;
+            case "mound_unburied.png":
+                mBitmap = BitmapFactory.decodeResource(res, R.drawable.mound_unburied);
+                break;
+            case "mound_treasure.png":
+                mBitmap = BitmapFactory.decodeResource(res, R.drawable.mound_treasure);
+                break;
             default:
                 mBitmap = null;
                 break;
@@ -83,10 +105,11 @@ public class BaseEntity {
         if(mBitmap == null) return false; // no valid bitmap
 
         // set frame height and width to dimensions of passed in png
-        mFrameWidth = mBitmap.getWidth() / mNumFrames;
+        mFrameWidth = (mBitmap.getWidth() / mNumFrames);
         mFrameHeight = mBitmap.getHeight();
+
         mRectToBeDrawn = new Rect((mFrameNumber * mFrameWidth) - 1,
-                0, (mFrameNumber * mFrameWidth + mFrameWidth) - 1, mFrameHeight);
+                0, ((mFrameNumber * mFrameWidth + mFrameWidth) - 1), mFrameHeight);
         return true; // we have a valid bitmap
     }
 
@@ -104,8 +127,8 @@ public class BaseEntity {
             destRect = new Rect(mXPos, mYPos, mXPos + screenWidth,
                     mYPos + screenHeight * 2);
         } else {
-            destRect = new Rect(mXPos, mYPos, mXPos + mFrameWidth,
-                    mYPos + mFrameHeight);
+            destRect = new Rect(mXPos, mYPos, mXPos + mFrameWidth + mDrawScaleX,
+                    mYPos + mFrameHeight + mDrawScaleY);
             //Log.e("Offset", Integer.toString(mXDrawOffset) + " X");
            //Log.e("Offset", Integer.toString(mYDrawOffset) + " Y");
         }
