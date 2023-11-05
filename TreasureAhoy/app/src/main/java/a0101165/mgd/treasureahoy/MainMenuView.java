@@ -142,9 +142,9 @@ public class MainMenuView extends SurfaceView implements Runnable{
                         Log.e("Touch Y", Float.toString(motionEvent.getY()));
                         Log.e("Touch Widget X", Float.toString(mWidgets.get(i).mXPos));
                         Log.e("Touch Widget Y", Float.toString(mWidgets.get(i).mYPos));
-                        if(motionEvent.getX() > mWidgets.get(i).mXPos && motionEvent.getX() < mWidgets.get(i).mXPos + (mWidgets.get(i).mTextScale * 2))
+                        if(motionEvent.getX() > mWidgets.get(i).mXPos && motionEvent.getX() < mWidgets.get(i).mXPos + mWidgets.get(i).mWidgetWidth)
                         {
-                            if(motionEvent.getY() > mWidgets.get(i).mYPos - mWidgets.get(i).mTextScale && motionEvent.getY() < mWidgets.get(i).mYPos)
+                            if(motionEvent.getY() > mWidgets.get(i).mYPos - mWidgets.get(i).mWidgetHeight && motionEvent.getY() < mWidgets.get(i).mYPos)
                             {
                                 Log.e("Touch", "Touched widget");
                                 Intent intent = new Intent(mContext, GameActivity.class);
