@@ -14,7 +14,8 @@ enum type{
     bigShark,
     smallShark,
     smallObstacle,
-    bigObstacle;
+    bigObstacle,
+    island
 }
 
 // parent class that all entities in game world are derived from
@@ -96,6 +97,10 @@ public class BaseEntity {
             case "mound_treasure.png":
                 mBitmap = BitmapFactory.decodeResource(res, R.drawable.mound_treasure);
                 break;
+            case "island.png":
+                mBitmap = BitmapFactory.decodeResource(res, R.drawable.island);
+                mType = type.island;
+                break;
             default:
                 mBitmap = null;
                 break;
@@ -149,7 +154,9 @@ public class BaseEntity {
             // collision is possible
             if(mYPos + mFrameHeight >= player.mYPos && mYPos <= player.mYPos + player.mFrameHeight){
                 // collision has occurred
-                if(!((LaunchEntity) this).mHasCollided && (mType == type.bigShark || mType == type.smallShark)) {
+                // has hit shark?
+                if(mType == type.bigShark || mType == type.smallShark) {
+                    if(((LaunchEntity) this).mHasCollided) return false;
                     mMoveSpeed = 0;
                     player.mState = State.Attached;
                     player.SetVelocity(0);
@@ -160,6 +167,7 @@ public class BaseEntity {
                     ((LaunchEntity) this).mHasCollided = true;
                     return true;
                 }
+                // has hit obstacle?
                 else if(mType == type.smallObstacle || mType == type.bigObstacle){
                     if(mType == type.smallObstacle) {
                         // reduce velocity when hitting obstacle (small obstacle slows)
@@ -172,6 +180,11 @@ public class BaseEntity {
                         player.mState = State.Dead;
                     }
                     mYPos = player.mScreenWidth * 2;
+                    return true;
+                }
+                // has hit island?
+                else if(mType == type.island) {
+                    player.mState = State.IslandReached;
                     return true;
                 }
                 else{

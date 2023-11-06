@@ -10,13 +10,7 @@ import android.view.SurfaceView;
 
 import java.util.ArrayList;
 
-enum moundState{
-    buried,
-    semiBuried1,
-    semiBuried2,
-    unburied,
-    treasure
-}
+
 
 public class DiggingView extends SurfaceView implements Runnable{
 

@@ -12,7 +12,8 @@ import java.util.Random;
 enum State {
     Attached,
     Moving,
-    Dead
+    Dead,
+    IslandReached
 }
 
 public class PlayerEntity extends BaseEntity{
@@ -36,6 +37,8 @@ public class PlayerEntity extends BaseEntity{
 
     int mVelocityX;
     int mVelocityY;
+
+    int mDistanceTravelled;
 
     boolean mCanDie;
 
@@ -62,6 +65,8 @@ public class PlayerEntity extends BaseEntity{
         SetVelocity(50);
 
         mRotateIncrement = 10.0f;
+
+        mDistanceTravelled = 0;
     }
 
     @Override
@@ -71,6 +76,9 @@ public class PlayerEntity extends BaseEntity{
         destRect = new Rect(mXPos + mXDrawOffset, mYPos + mYDrawOffset, mXPos + mFrameWidth + mXDrawOffset,
                 mYPos + mFrameHeight + mYDrawOffset);
         canvas.drawBitmap(mRotMap, mRectToBeDrawn, destRect, paint);
+        int tempTextSize = 60;
+        paint.setTextSize(tempTextSize);
+        canvas.drawText("Distance Travelled: " + Integer.toString(mDistanceTravelled), tempTextSize, tempTextSize, paint);
     }
 
     @Override
@@ -131,10 +139,12 @@ public class PlayerEntity extends BaseEntity{
         }
         else if (mState == State.Moving){
 
+            mDistanceTravelled += mVelocityY;
+
+
             if(mVelocityY < 0) {
                 mMoveSpeed = 0; // stop movement for other object
                 mYPos -= mVelocityY; // if moving down, do not move objects to follow player
-
                 if(mYPos < 0) mState = State.Dead;
             }
 

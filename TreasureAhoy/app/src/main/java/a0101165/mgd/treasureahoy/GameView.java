@@ -34,6 +34,8 @@ public class GameView extends SurfaceView implements Runnable {
     int mLaunchObjectNumber;
     int mObstacleObjectNumber;
 
+    int mTreasureDistance;
+
     ArrayList<BaseEntity> mEntities;
 
     PlayerEntity mPlayer;
@@ -53,6 +55,8 @@ public class GameView extends SurfaceView implements Runnable {
 
         mLaunchObjectNumber = 4;
         mObstacleObjectNumber = 2;
+
+        mTreasureDistance = 6000;
 
         // add entities
 
@@ -216,9 +220,24 @@ public class GameView extends SurfaceView implements Runnable {
 
         mEntities.add(tempLaunch);
 
+
+        MoundEntity island = new MoundEntity(1, 0, 0, -mTreasureDistance,
+                false, 0, 0, moundState.island);
+
+        if(!island.LoadSprite("island.png", getResources())){
+            Log.d("ERROR", "Could not load island sprite");
+        }
+
+        Random randXLoc = new Random();
+        island.mXPos = randXLoc.nextInt(mScreenWidth - island.mFrameWidth) + island.mFrameWidth; // random x position
+
+        mEntities.add(island);
+
         // we want player to be last in list to it is drawn on top of every other entity
 
-        mPlayer = new PlayerEntity(1, 0, mScreenWidth / 2, mScreenHeight / 2);
+
+
+        mPlayer = new PlayerEntity(1, 0, mScreenWidth, mScreenHeight / 2);
 
         if (!mPlayer.LoadSprite("pirate_ship.png", getResources())) {
             Log.d("ERROR", "Could not load player sprite");
@@ -301,8 +320,16 @@ public class GameView extends SurfaceView implements Runnable {
         mContext.startActivity(intent);
     }
 
+    public void DiggingMiniGameStart() {
+        Intent intent = new Intent(mContext, DiggingActivity.class);
+        intent.putExtra("Key", "Digging mini game start");
+        mContext.startActivity(intent);
+    }
+
+
 
     public void Update() {
+        if(mPlayer.mState == State.IslandReached) DiggingMiniGameStart();
         if(mPlayer.mState == State.Dead) Dead(); // return to menu if player is dead
         // simulation
         // run update functions of all saved entities

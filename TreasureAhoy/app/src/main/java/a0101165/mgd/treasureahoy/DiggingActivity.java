@@ -5,29 +5,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.widget.ImageView;
 
-
-
-public class MainActivity extends AppCompatActivity {
-
+public class DiggingActivity extends AppCompatActivity {
 
     ImageView ourView;
-
 
     int screenWidth;
     int screenHeight;
 
-    MainMenuView mainMenuView;
-
+    DiggingView diggingView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
         String value = intent.getStringExtra("Key");
+        if(value != "Digging mini game start") {
+            Log.e("StartActivity", value);
+        }
 
         // find size of display
         Display display = getWindowManager().getDefaultDisplay();
@@ -37,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
         screenHeight = size.y;
 
 
-        mainMenuView = new MainMenuView(this, screenWidth, screenHeight);
-        setContentView(mainMenuView);
+        diggingView = new DiggingView(this, screenWidth, screenHeight);
+        setContentView(diggingView);
 
 
 
@@ -56,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
 
         while(true) {
-            mainMenuView.Pause();
+            diggingView.Pause();
             break;
         }
 
@@ -66,19 +65,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mainMenuView.Resume();
+        diggingView.Resume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mainMenuView.Pause();
+        diggingView.Pause();
     }
 
     // if back is pressed on phone we want to finish the activity (quit the game)
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_BACK) {
-            mainMenuView.Pause();
+            diggingView.Pause();
             finish();
             return true;
         }
