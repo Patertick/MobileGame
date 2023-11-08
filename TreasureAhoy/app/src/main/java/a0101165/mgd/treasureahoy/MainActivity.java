@@ -4,7 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Point;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.widget.ImageView;
@@ -39,15 +44,6 @@ public class MainActivity extends AppCompatActivity {
 
         mainMenuView = new MainMenuView(this, screenWidth, screenHeight);
         setContentView(mainMenuView);
-
-
-
-
-        //ourView = (ImageView) findViewById(R.id.imageView);
-
-
-
-        // get bitmaps
 
     }
 

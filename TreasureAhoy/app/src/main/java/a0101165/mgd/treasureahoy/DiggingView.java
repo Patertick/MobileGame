@@ -1,9 +1,14 @@
 package a0101165.mgd.treasureahoy;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -34,6 +39,8 @@ public class DiggingView extends SurfaceView implements Runnable{
     ArrayList<BaseEntity> mSprites;
 
     Context mContext;
+
+    String mCurrentMoveKey;
 
     public DiggingView(Context context, int screenWidth, int screenHeight){
         super(context);
@@ -104,6 +111,7 @@ public class DiggingView extends SurfaceView implements Runnable{
         }
 
         mSprites.add(tempSprite);
+
     }
 
     @Override
@@ -115,12 +123,46 @@ public class DiggingView extends SurfaceView implements Runnable{
         }
     }
 
+    public void BackToMainMenu(){
+        Intent intent = new Intent(mContext, MainActivity.class);
+        intent.putExtra("Key", "Back to main menu");
+        mContext.startActivity(intent);
+    }
+
     public void Update() {
         // update current mound
+
         for(int i = 0; i < mSprites.size(); i++) {
             if((MoundEntity)(mSprites.get(i)) != null && ((MoundEntity)(mSprites.get(i))).mState == mState){
                 ((MoundEntity)(mSprites.get(i))).mIsHidden = false;
+            } else ((MoundEntity)(mSprites.get(i))).mIsHidden = true;
+        }
+
+
+
+        if(mState == moundState.unburied) {
+            int secondsToSleep = 1500;
+            Draw();
+            try {
+                mDiggingLoopThread.sleep(secondsToSleep); // sleep for defined seconds
+            } catch(InterruptedException e){
+                Log.e("Thread error", "Thread could not sleep");
             }
+
+            mState = moundState.treasure;
+        }
+        else if(mState == moundState.treasure)
+        {
+            int secondsToSleep = 2000;
+            Draw();
+            try {
+                mDiggingLoopThread.sleep(secondsToSleep); // sleep for defined seconds
+            } catch(InterruptedException e){
+                Log.e("Thread error", "Thread could not sleep");
+            }
+
+            // may show message to screen or not
+            BackToMainMenu();
         }
     }
 
@@ -170,4 +212,42 @@ public class DiggingView extends SurfaceView implements Runnable{
         mDiggingLoopThread = new Thread(this);
         mDiggingLoopThread.start();
     }
+
+    public void SetMotion(String motionKey){
+        switch(motionKey){
+            case "UP":
+                // digging action complete if going from downwards acceleration to upwards acceleration
+                if(mCurrentMoveKey == "DOWN") IncrementState();
+                mCurrentMoveKey = "UP";
+                break;
+            case "DOWN":
+                mCurrentMoveKey = "DOWN";
+                break;
+            default:
+                // do nothing
+                mCurrentMoveKey = "";
+                break;
+        }
+    }
+
+    public void IncrementState() {
+        switch(mState){
+            case buried:
+                Log.d("IncrementState", "buried to semiburied1");
+                mState = moundState.semiBuried1;
+                break;
+            case semiBuried1:
+                Log.d("IncrementState", "semiburied1 to semiburied2");
+                mState = moundState.semiBuried2;
+                break;
+            case semiBuried2:
+                Log.d("IncrementState", "semiburied2 to unburied");
+                mState = moundState.unburied;
+                break;
+            default:
+                Log.e("ERROR", "Mound state is island on digging view!");
+        }
+    }
+
+
 }

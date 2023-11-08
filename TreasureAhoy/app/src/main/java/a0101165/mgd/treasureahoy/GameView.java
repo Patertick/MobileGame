@@ -229,7 +229,7 @@ public class GameView extends SurfaceView implements Runnable {
         }
 
         Random randXLoc = new Random();
-        island.mXPos = randXLoc.nextInt(mScreenWidth - island.mFrameWidth) + island.mFrameWidth; // random x position
+        island.mXPos = randXLoc.nextInt(mScreenWidth - island.mFrameWidth - island.mFrameWidth) + island.mFrameWidth; // random x position
 
         mEntities.add(island);
 
