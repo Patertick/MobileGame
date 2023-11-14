@@ -1,6 +1,7 @@
 package a0101165.mgd.treasureahoy;
 
 import android.content.Context;
+import android.widget.Toast;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -51,6 +52,8 @@ public class MainMenuView extends SurfaceView implements Runnable{
         mBackground.mMoveSpeed = 10;
 
         if (!mBackground.LoadSprite("water_moving_background.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Could not load sprite", duration);
             Log.d("ERROR", "Could not load background sprite");
         }
 
@@ -107,6 +110,8 @@ public class MainMenuView extends SurfaceView implements Runnable{
             try {
                 mMenuLoopThread.sleep(timeToSleep);
             } catch(InterruptedException e){
+                int duration = Toast.LENGTH_SHORT;
+                Toast.makeText(mContext, "Fatal Error", duration);
                 Log.e("Thread error", "Thread could not sleep");
             }
         }
@@ -119,6 +124,8 @@ public class MainMenuView extends SurfaceView implements Runnable{
         try {
             mMenuLoopThread.join();
         } catch(InterruptedException e){
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Fatal Error", duration);
             Log.e("Thread error", "Thread could not join");
         }
     }
@@ -138,15 +145,10 @@ public class MainMenuView extends SurfaceView implements Runnable{
                 for(int i = 0; i < mWidgets.size(); i++) {
 
                     if(mWidgets.get(i).mInteractable){
-                        Log.e("Touch X", Float.toString(motionEvent.getX()));
-                        Log.e("Touch Y", Float.toString(motionEvent.getY()));
-                        Log.e("Touch Widget X", Float.toString(mWidgets.get(i).mXPos));
-                        Log.e("Touch Widget Y", Float.toString(mWidgets.get(i).mYPos));
                         if(motionEvent.getX() > mWidgets.get(i).mXPos && motionEvent.getX() < mWidgets.get(i).mXPos + mWidgets.get(i).mWidgetWidth)
                         {
                             if(motionEvent.getY() > mWidgets.get(i).mYPos - mWidgets.get(i).mWidgetHeight && motionEvent.getY() < mWidgets.get(i).mYPos)
                             {
-                                Log.e("Touch", "Touched widget");
                                 Intent intent = new Intent(mContext, GameActivity.class);
                                 intent.putExtra("Key", 0);
                                 mContext.startActivity(intent);

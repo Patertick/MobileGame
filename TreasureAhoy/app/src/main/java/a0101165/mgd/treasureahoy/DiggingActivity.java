@@ -1,5 +1,7 @@
 package a0101165.mgd.treasureahoy;
 
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -50,9 +52,11 @@ public class DiggingActivity extends AppCompatActivity {
 
         mSensorManager = (SensorManager) (getSystemService(SENSOR_SERVICE));
         mAccelerometerSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
         if(mAccelerometerSensor == null){
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(this, "No accelerometer", duration);
             Log.d("ERROR", "Device has no accelerometer sensor");
+            return;
         }
 
 
@@ -68,11 +72,9 @@ public class DiggingActivity extends AppCompatActivity {
             @Override
             public void onSensorChanged(SensorEvent sensorEvent){
                 if(sensorEvent.values[1] > 5.0f) {
-                    Log.d("Move", "UP Acceleration");
                     diggingView.SetMotion("UP");
                 }
                 else if(sensorEvent.values[1] < -5.0f) {
-                    Log.d("Move", "DOWN Acceleration");
                     diggingView.SetMotion("DOWN");
                 }
             }

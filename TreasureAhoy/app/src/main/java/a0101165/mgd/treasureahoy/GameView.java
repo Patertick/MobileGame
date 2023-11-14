@@ -1,6 +1,7 @@
 package a0101165.mgd.treasureahoy;
 
 import android.content.Context;
+import android.widget.Toast;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -65,173 +66,177 @@ public class GameView extends SurfaceView implements Runnable {
         BackgroundEntity tempBackground = new BackgroundEntity(1, 0,
                 0, 0, mScreenHeight);
         if (!tempBackground.LoadSprite("water_moving_background.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load background sprite");
-        }
-
-        mEntities.add(tempBackground);
+        } else mEntities.add(tempBackground);
 
         LaunchEntity tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
 
         if (!tempLaunch.LoadSprite("shark_small.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load shark small sprite");
-        }
-
-        mEntities.add(tempLaunch);
+        } else mEntities.add(tempLaunch);
 
         tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
 
         if (!tempLaunch.LoadSprite("shark_small.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load shark small sprite");
-        }
-
-        mEntities.add(tempLaunch);
+        } else mEntities.add(tempLaunch);
 
         tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
 
         if (!tempLaunch.LoadSprite("shark_small.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load shark small sprite");
-        }
-
-        mEntities.add(tempLaunch);
+        } else mEntities.add(tempLaunch);
 
         tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
 
         if (!tempLaunch.LoadSprite("shark_small.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load shark small sprite");
-        }
-
-        mEntities.add(tempLaunch);
+        } else mEntities.add(tempLaunch);
 
         tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
 
         if (!tempLaunch.LoadSprite("shark_small.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load shark small sprite");
-        }
-
-        mEntities.add(tempLaunch);
+        } else mEntities.add(tempLaunch);
 
         tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
 
         if (!tempLaunch.LoadSprite("shark_small.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load shark small sprite");
-        }
-
-        mEntities.add(tempLaunch);
+        } else mEntities.add(tempLaunch);
 
         tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
 
         if (!tempLaunch.LoadSprite("shark_small.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load shark small sprite");
-        }
-
-        mEntities.add(tempLaunch);
+        } else mEntities.add(tempLaunch);
 
         tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
 
         if (!tempLaunch.LoadSprite("shark_small.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load shark small sprite");
-        }
-
-        mEntities.add(tempLaunch);
+        } else mEntities.add(tempLaunch);
 
         tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
 
         if (!tempLaunch.LoadSprite("shark_big.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load shark big sprite");
-        }
-
-        mEntities.add(tempLaunch);
+        } else mEntities.add(tempLaunch);
 
         tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
 
         if (!tempLaunch.LoadSprite("shark_big.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load shark big sprite");
-        }
-
-        mEntities.add(tempLaunch);
+        } else mEntities.add(tempLaunch);
 
         tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
 
         if (!tempLaunch.LoadSprite("shark_big.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load shark big sprite");
-        }
-
-        mEntities.add(tempLaunch);
+        } else mEntities.add(tempLaunch);
 
         tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
 
         if (!tempLaunch.LoadSprite("shark_big.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load shark big sprite");
-        }
-
-        mEntities.add(tempLaunch);
+        } else mEntities.add(tempLaunch);
 
         tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
 
         if (!tempLaunch.LoadSprite("shark_big.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load shark big sprite");
-        }
+        } else mEntities.add(tempLaunch);
 
         tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
 
         if (!tempLaunch.LoadSprite("obstacle_small.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load obstacle small sprite");
-        }
-
-        mEntities.add(tempLaunch);
+        } else mEntities.add(tempLaunch);
 
         tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
 
         if (!tempLaunch.LoadSprite("obstacle_small.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load obstacle small sprite");
-        }
-
-        mEntities.add(tempLaunch);
+        } else mEntities.add(tempLaunch);
 
         tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
 
         if (!tempLaunch.LoadSprite("obstacle_small.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load obstacle small sprite");
-        }
-
-        mEntities.add(tempLaunch);
+        } else mEntities.add(tempLaunch);
 
         tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
 
         if (!tempLaunch.LoadSprite("obstacle_small.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load obstacle small sprite");
-        }
-
-        mEntities.add(tempLaunch);
+        } else mEntities.add(tempLaunch);
 
         tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
 
         if (!tempLaunch.LoadSprite("obstacle_big.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load obstacle small sprite");
-        }
-
-        mEntities.add(tempLaunch);
+        } else mEntities.add(tempLaunch);
 
         tempLaunch = new LaunchEntity(1, 0, 0, -100, mScreenWidth, mScreenHeight);
 
         if (!tempLaunch.LoadSprite("obstacle_big.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load obstacle small sprite");
-        }
-
-        mEntities.add(tempLaunch);
+        } else mEntities.add(tempLaunch);
 
 
         MoundEntity island = new MoundEntity(1, 0, 0, -mTreasureDistance,
-                false, 0, 0, moundState.island);
+                false, 0, 0, moundState.island, mScreenHeight);
+
+        Random randLoc = new Random();
+        island.mYPos -= randLoc.nextInt(2000);
+        island.mXPos = randLoc.nextInt(mScreenWidth - island.mFrameWidth - island.mFrameWidth) + island.mFrameWidth; // random x position
+
 
         if(!island.LoadSprite("island.png", getResources())){
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load island sprite");
-        }
-
-        Random randXLoc = new Random();
-        island.mXPos = randXLoc.nextInt(mScreenWidth - island.mFrameWidth - island.mFrameWidth) + island.mFrameWidth; // random x position
-
-        mEntities.add(island);
+        } else mEntities.add(island);
 
         // we want player to be last in list to it is drawn on top of every other entity
 
@@ -240,6 +245,8 @@ public class GameView extends SurfaceView implements Runnable {
         mPlayer = new PlayerEntity(1, 0, mScreenWidth / 2, mScreenHeight - (mScreenHeight/6));
 
         if (!mPlayer.LoadSprite("pirate_ship.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load player sprite");
         }
 
@@ -291,7 +298,6 @@ public class GameView extends SurfaceView implements Runnable {
                 // if entity is valid set to visible
                 mEntities.get(i).mIsHidden = false; // set to be visible
                 numObjectsVisible++; // increment value
-                Log.e("Objects visible", Integer.toString(numObjectsVisible));
             }
         }
         for (int i = 0; i < mEntities.size(); i++) {
@@ -382,7 +388,6 @@ public class GameView extends SurfaceView implements Runnable {
                 // if entity is valid set to visible
                 mEntities.get(i).mIsHidden = false; // set to be visible
                 numObstacleObjectsVisible++; // increment value
-                Log.e("Objects visible", Integer.toString(numObstacleObjectsVisible));
             }
         }
 
@@ -413,6 +418,8 @@ public class GameView extends SurfaceView implements Runnable {
             try {
                 mGameLoopThread.sleep(timeToSleep);
             } catch(InterruptedException e){
+                int duration = Toast.LENGTH_SHORT;
+                Toast.makeText(mContext, "Fatal Error", duration);
                 Log.e("Thread error", "Thread could not sleep");
             }
         }
@@ -425,6 +432,8 @@ public class GameView extends SurfaceView implements Runnable {
         try {
             mGameLoopThread.join();
         } catch(InterruptedException e){
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Fatal Error", duration);
             Log.e("Thread error", "Thread could not join");
         }
     }

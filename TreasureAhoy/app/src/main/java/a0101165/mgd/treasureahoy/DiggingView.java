@@ -2,6 +2,7 @@ package a0101165.mgd.treasureahoy;
 
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -12,6 +13,7 @@ import android.hardware.SensorManager;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -64,6 +66,8 @@ public class DiggingView extends SurfaceView implements Runnable{
         mSprites = new ArrayList<BaseEntity>();
 
         if (!mBackground.LoadSprite("digging_background.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load background sprite");
         }
 
@@ -72,49 +76,49 @@ public class DiggingView extends SurfaceView implements Runnable{
 
         // load mound sprites
         MoundEntity tempSprite = new MoundEntity(1, 0, mScreenWidth / 7, mScreenHeight - (int)(mScreenHeight / 2.5),
-                true, moundScaleX, moundScaleY, moundState.buried);
+                true, moundScaleX, moundScaleY, moundState.buried, mScreenHeight);
 
         if (!tempSprite.LoadSprite("mound_buried.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load mound buried sprite");
-        }
-
-        mSprites.add(tempSprite);
+        } else mSprites.add(tempSprite);
 
         tempSprite = new MoundEntity(1, 0, mScreenWidth / 7, mScreenHeight - (int)(mScreenHeight / 2.5),
-                true, moundScaleX, moundScaleY, moundState.semiBuried1);
+                true, moundScaleX, moundScaleY, moundState.semiBuried1, mScreenHeight);
 
         if (!tempSprite.LoadSprite("mound_semiburied_1.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load mound buried sprite");
-        }
-
-        mSprites.add(tempSprite);
+        } else mSprites.add(tempSprite);
 
         tempSprite = new MoundEntity(1, 0, mScreenWidth / 7, mScreenHeight - (int)(mScreenHeight / 2.5),
-                true, moundScaleX, moundScaleY, moundState.semiBuried2);
+                true, moundScaleX, moundScaleY, moundState.semiBuried2, mScreenHeight);
 
         if (!tempSprite.LoadSprite("mound_semiburied_2.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load mound buried sprite");
-        }
-
-        mSprites.add(tempSprite);
+        } else mSprites.add(tempSprite);
 
         tempSprite = new MoundEntity(1, 0, mScreenWidth / 7, mScreenHeight - (int)(mScreenHeight / 2.5),
-                true, moundScaleX, moundScaleY, moundState.unburied);
+                true, moundScaleX, moundScaleY, moundState.unburied, mScreenHeight);
 
         if (!tempSprite.LoadSprite("mound_unburied.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load mound buried sprite");
-        }
-
-        mSprites.add(tempSprite);
+        } else mSprites.add(tempSprite);
 
         tempSprite = new MoundEntity(1, 0, mScreenWidth / 7, mScreenHeight - (int)(mScreenHeight / 2.5),
-                true, moundScaleX, moundScaleY, moundState.treasure);
+                true, moundScaleX, moundScaleY, moundState.treasure, mScreenHeight);
 
         if (!tempSprite.LoadSprite("mound_treasure.png", getResources())) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Sprite did not load", duration);
             Log.d("ERROR", "Could not load mound buried sprite");
-        }
-
-        mSprites.add(tempSprite);
+        }else mSprites.add(tempSprite);
 
     }
 
@@ -150,6 +154,8 @@ public class DiggingView extends SurfaceView implements Runnable{
             try {
                 mDiggingLoopThread.sleep(secondsToSleep); // sleep for defined seconds
             } catch(InterruptedException e){
+                int duration = Toast.LENGTH_SHORT;
+                Toast.makeText(mContext, "Fatal Error", duration);
                 Log.e("Thread error", "Thread could not sleep");
             }
 
@@ -162,6 +168,8 @@ public class DiggingView extends SurfaceView implements Runnable{
             try {
                 mDiggingLoopThread.sleep(secondsToSleep); // sleep for defined seconds
             } catch(InterruptedException e){
+                int duration = Toast.LENGTH_SHORT;
+                Toast.makeText(mContext, "Fatal Error", duration);
                 Log.e("Thread error", "Thread could not sleep");
             }
 
@@ -195,6 +203,8 @@ public class DiggingView extends SurfaceView implements Runnable{
             try {
                 mDiggingLoopThread.sleep(timeToSleep);
             } catch(InterruptedException e){
+                int duration = Toast.LENGTH_SHORT;
+                Toast.makeText(mContext, "Fatal Error", duration);
                 Log.e("Thread error", "Thread could not sleep");
             }
         }
@@ -207,6 +217,8 @@ public class DiggingView extends SurfaceView implements Runnable{
         try {
             mDiggingLoopThread.join();
         } catch(InterruptedException e){
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(mContext, "Fatal Error", duration);
             Log.e("Thread error", "Thread could not join");
         }
     }
@@ -249,6 +261,8 @@ public class DiggingView extends SurfaceView implements Runnable{
                 mState = moundState.unburied;
                 break;
             default:
+                int duration = Toast.LENGTH_SHORT;
+                Toast.makeText(mContext, "Fatal Error", duration);
                 Log.e("ERROR", "Mound state is island on digging view!");
         }
     }
