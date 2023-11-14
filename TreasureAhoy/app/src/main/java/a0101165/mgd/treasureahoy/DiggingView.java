@@ -28,6 +28,8 @@ public class DiggingView extends SurfaceView implements Runnable{
 
     BackgroundEntity mBackground;
 
+    int mSavedDistance;
+
     long mLastFrameTime;
     int mFPS;
 
@@ -42,7 +44,7 @@ public class DiggingView extends SurfaceView implements Runnable{
 
     String mCurrentMoveKey;
 
-    public DiggingView(Context context, int screenWidth, int screenHeight){
+    public DiggingView(Context context, int screenWidth, int screenHeight, int savedDistance){
         super(context);
         mContext = context;
         mHolder = getHolder();
@@ -54,6 +56,8 @@ public class DiggingView extends SurfaceView implements Runnable{
 
         mBackground = new BackgroundEntity(1, 0, 0, 0, 0);
         mBackground.mMoveSpeed = 0;
+
+        mSavedDistance = savedDistance;
 
         mState = moundState.buried;
 
@@ -124,8 +128,8 @@ public class DiggingView extends SurfaceView implements Runnable{
     }
 
     public void BackToMainMenu(){
-        Intent intent = new Intent(mContext, MainActivity.class);
-        intent.putExtra("Key", "Back to main menu");
+        Intent intent = new Intent(mContext, GameActivity.class);
+        intent.putExtra("Key", mSavedDistance);
         mContext.startActivity(intent);
     }
 

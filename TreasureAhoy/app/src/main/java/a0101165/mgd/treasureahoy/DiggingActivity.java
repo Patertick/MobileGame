@@ -34,7 +34,7 @@ public class DiggingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        String value = intent.getStringExtra("Key");
+        int value = intent.getIntExtra("Key", 0);
 
         // find size of display
         Display display = getWindowManager().getDefaultDisplay();
@@ -44,7 +44,7 @@ public class DiggingActivity extends AppCompatActivity {
         screenHeight = size.y;
 
 
-        diggingView = new DiggingView(this, screenWidth, screenHeight);
+        diggingView = new DiggingView(this, screenWidth, screenHeight, value);
         setContentView(diggingView);
 
 

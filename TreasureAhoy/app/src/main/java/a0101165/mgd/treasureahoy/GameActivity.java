@@ -22,18 +22,9 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.e("StartActivity", "GameActivity");
 
         Intent intent = getIntent();
-        String value = intent.getStringExtra("Key");
-        if(value != "Game start") {
-            Log.e("StartActivity", value);
-            //intent = new Intent(GameActivity.this, MainActivity.class);
-            //intent.putExtra("Key", "Back to menu");
-            //GameActivity.this.startActivity(intent);
-        }
-
-        Log.e("StartActivity", "GameActivity");
+        int value = intent.getIntExtra("Key", 0);
 
         // find size of display
         Display display = getWindowManager().getDefaultDisplay();
@@ -43,7 +34,7 @@ public class GameActivity extends AppCompatActivity {
         screenHeight = size.y;
 
 
-        gameView = new GameView(this, screenWidth, screenHeight);
+        gameView = new GameView(this, screenWidth, screenHeight, value);
         setContentView(gameView);
 
 

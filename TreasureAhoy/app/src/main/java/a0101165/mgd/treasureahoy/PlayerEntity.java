@@ -21,6 +21,7 @@ public class PlayerEntity extends BaseEntity{
     LaunchEntity mAttachedLaunchObject;
 
     int mScreenWidth;
+    int mScreenHeight;
 
     boolean mNotMoving;
 
@@ -55,6 +56,9 @@ public class PlayerEntity extends BaseEntity{
         mYDrawOffset = 0;
         mStartY = yPos;
 
+        mXPos = xPos;
+        mYPos = yPos;
+
         mCanDie = false;
 
         mVelocityX = 0;
@@ -71,6 +75,7 @@ public class PlayerEntity extends BaseEntity{
 
     @Override
     public void Draw(Canvas canvas, Paint paint, int screenWidth, int screenHeight){
+        mScreenHeight = screenHeight;
         if(mRotMap == null) return;
         Rect destRect;
         destRect = new Rect(mXPos + mXDrawOffset, mYPos + mYDrawOffset, mXPos + mFrameWidth + mXDrawOffset,
@@ -114,12 +119,18 @@ public class PlayerEntity extends BaseEntity{
             mNotMoving = true;
 
 
+
             // Set origin to centre of attached object
             mOriginX = mAttachedLaunchObject.mXPos;
             mOriginY = mAttachedLaunchObject.mYPos;
 
             // trace circle with defined radius
             float radius = 200.0f;
+
+            // keep player in view
+            if(mAttachedLaunchObject.mYPos + radius * 1.5 > mScreenHeight){
+                mAttachedLaunchObject.mYPos -= (int)(radius * 1.5);
+            }
 
             // trace circle using sin and cos for offset values
             float xOffset = (float) (Math.sin(-angleInRads + 90.0f)) * radius;
@@ -141,11 +152,12 @@ public class PlayerEntity extends BaseEntity{
 
             mDistanceTravelled += mVelocityY;
 
+            if(mYPos > mScreenHeight) mState = State.Dead;
 
             if(mVelocityY < 0) {
                 mMoveSpeed = 0; // stop movement for other object
                 mYPos -= mVelocityY; // if moving down, do not move objects to follow player
-                if(mYPos < 0) mState = State.Dead;
+
             }
 
             mXPos += mVelocityX;

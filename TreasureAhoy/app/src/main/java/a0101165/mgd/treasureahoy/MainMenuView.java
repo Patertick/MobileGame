@@ -148,7 +148,7 @@ public class MainMenuView extends SurfaceView implements Runnable{
                             {
                                 Log.e("Touch", "Touched widget");
                                 Intent intent = new Intent(mContext, GameActivity.class);
-                                intent.putExtra("Key", "Game start");
+                                intent.putExtra("Key", 0);
                                 mContext.startActivity(intent);
                             }
                         }

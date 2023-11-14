@@ -41,7 +41,7 @@ public class GameView extends SurfaceView implements Runnable {
     PlayerEntity mPlayer;
 
     // functions
-    public GameView(Context context, int screenWidth, int screenHeight) {
+    public GameView(Context context, int screenWidth, int screenHeight, int newDistance) {
         // initialize variables
         super(context);
         mContext = context;
@@ -237,13 +237,15 @@ public class GameView extends SurfaceView implements Runnable {
 
 
 
-        mPlayer = new PlayerEntity(1, 0, mScreenWidth, mScreenHeight / 2);
+        mPlayer = new PlayerEntity(1, 0, mScreenWidth / 2, mScreenHeight - (mScreenHeight/6));
 
         if (!mPlayer.LoadSprite("pirate_ship.png", getResources())) {
             Log.d("ERROR", "Could not load player sprite");
         }
 
         mPlayer.SetScreenWidth(mScreenWidth);
+
+        mPlayer.mDistanceTravelled = newDistance;
 
         //mEntities.add(mPlayer);
 
@@ -322,7 +324,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void DiggingMiniGameStart() {
         Intent intent = new Intent(mContext, DiggingActivity.class);
-        intent.putExtra("Key", "Digging mini game start");
+        intent.putExtra("Key", mPlayer.mDistanceTravelled);
         mContext.startActivity(intent);
     }
 
