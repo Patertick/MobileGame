@@ -1,6 +1,7 @@
 package a0101165.mgd.treasureahoy;
 
 import android.content.Context;
+import android.location.Location;
 import android.widget.Toast;
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -40,6 +41,8 @@ public class GameView extends SurfaceView implements Runnable {
     ArrayList<BaseEntity> mEntities;
 
     PlayerEntity mPlayer;
+
+    Location mCurrentLocation;
 
     // functions
     public GameView(Context context, int screenWidth, int screenHeight, int newDistance) {
@@ -465,6 +468,10 @@ public class GameView extends SurfaceView implements Runnable {
                 break;
         }
         return true;
+    }
+
+    public void UpdateLocation(Location newLocation) {
+        mCurrentLocation = newLocation;
     }
 
     //public int GetFPS() { return mFPS; }

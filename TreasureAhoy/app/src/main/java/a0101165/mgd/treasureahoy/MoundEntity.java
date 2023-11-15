@@ -4,14 +4,6 @@ import android.util.Log;
 import java.util.Random;
 
 
-enum moundState{
-    buried,
-    semiBuried1,
-    semiBuried2,
-    unburied,
-    treasure,
-    island
-}
 
 public class MoundEntity extends BaseEntity{
 

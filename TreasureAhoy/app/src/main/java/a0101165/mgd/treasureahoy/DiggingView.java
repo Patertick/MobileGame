@@ -18,6 +18,14 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
+enum moundState{
+    buried,
+    semiBuried1,
+    semiBuried2,
+    unburied,
+    treasure,
+    island
+}
 
 public class DiggingView extends SurfaceView implements Runnable{
 
