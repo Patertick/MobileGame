@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.media.SoundPool;
 import android.util.Log;
 
 
@@ -146,8 +147,7 @@ public class BaseEntity {
         mMoveSpeed = newMoveSpeed;
     }
 
-
-    public boolean CheckForPlayerCollision(PlayerEntity player) {
+    public boolean CheckForPlayerCollision(PlayerEntity player, SoundPool soundPool, int woodCrashID, int iceCrashID, int launchCrashID) {
         // check for collision (shark x, y width = 32)
         if(player.mState == State.Attached || player.mState == State.Dead) return false; // if attached, do not check collisions (would be unfair to die whilst not in control)
         if(mXPos + mFrameWidth >= player.mXPos && mXPos <= player.mXPos + player.mFrameWidth){
@@ -157,6 +157,7 @@ public class BaseEntity {
                 // has hit shark?
                 if(mType == type.bigShark || mType == type.smallShark) {
                     if(((LaunchEntity) this).mHasCollided) return false;
+                    soundPool.play(launchCrashID, 1, 1, 0, 0, 1.0f);
                     mMoveSpeed = 0;
                     player.mState = State.Attached;
                     player.SetVelocity(0);
@@ -170,11 +171,13 @@ public class BaseEntity {
                 // has hit obstacle?
                 else if(mType == type.smallObstacle || mType == type.bigObstacle){
                     if(mType == type.smallObstacle) {
+                        soundPool.play(woodCrashID, 1, 1, 0, 0, 1.0f);
                         // reduce velocity when hitting obstacle (small obstacle slows)
                         player.mVelocityX = (int) (player.mVelocityX * 0.5);
                         player.mVelocityY = (int) (player.mVelocityY * 0.5);
                     }
                     else{
+                        soundPool.play(iceCrashID, 1, 1, 0, 0, 1.0f);
                         player.mVelocityX = 0;
                         player.mVelocityY = 0;
                         player.mState = State.Dead;
@@ -195,3 +198,5 @@ public class BaseEntity {
         return false;
     }
 }
+
+

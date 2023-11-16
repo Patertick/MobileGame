@@ -1,7 +1,11 @@
 package a0101165.mgd.treasureahoy;
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
 import android.location.Location;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.widget.Toast;
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -12,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -44,6 +49,14 @@ public class GameView extends SurfaceView implements Runnable {
 
     Location mCurrentLocation;
 
+    SoundPool mSoundPool;
+
+    int mSoundArgh = -1;
+    int mSoundBell = -1;
+    int mSoundIce = -1;
+    int mSoundWood = -1;
+    int mSoundOcean = -1;
+
     // functions
     public GameView(Context context, int screenWidth, int screenHeight, int newDistance) {
         // initialize variables
@@ -61,6 +74,33 @@ public class GameView extends SurfaceView implements Runnable {
         mObstacleObjectNumber = 2;
 
         mTreasureDistance = 6000;
+
+        // Sound
+
+        mSoundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
+
+        try{
+            AssetManager assetManager = mContext.getAssets();
+            AssetFileDescriptor descriptor;
+
+            descriptor = assetManager.openFd("bell.mp3");
+            mSoundBell = mSoundPool.load(descriptor, 0);
+
+            descriptor = assetManager.openFd("ice_break.mp3");
+            mSoundIce = mSoundPool.load(descriptor, 0);
+
+            descriptor = assetManager.openFd("ocean_move.mp3");
+            mSoundOcean = mSoundPool.load(descriptor, 0);
+
+            descriptor = assetManager.openFd("pirate_argh.mp3");
+            mSoundArgh = mSoundPool.load(descriptor, 0);
+
+            descriptor = assetManager.openFd("wood_break.mp3");
+            mSoundWood = mSoundPool.load(descriptor, 0);
+
+        } catch(IOException e) {
+            Log.e("ERROR", "Sound could not load");
+        }
 
         // add entities
 
@@ -365,7 +405,7 @@ public class GameView extends SurfaceView implements Runnable {
 
             mEntities.get(i).Update();
             // check for player collision
-            if(mEntities.get(i).CheckForPlayerCollision(mPlayer)){
+            if(mEntities.get(i).CheckForPlayerCollision(mPlayer, mSoundPool, mSoundWood, mSoundIce, mSoundBell)){
                 // we hit an object
             }
         }
@@ -453,6 +493,8 @@ public class GameView extends SurfaceView implements Runnable {
             case MotionEvent.ACTION_DOWN:
 
                 if(mPlayer.mAttachedLaunchObject != null) {
+                    mSoundPool.play(mSoundOcean, 1, 1, 0, 0, 1.0f);
+                    mSoundPool.play(mSoundArgh, 1, 1, 0, 0, 1.0f);
                     if(mPlayer.mAttachedLaunchObject.mType == type.bigShark) mPlayer.SetVelocity(450);
                     else if(mPlayer.mAttachedLaunchObject.mType == type.smallShark) mPlayer.SetVelocity(250);
 
