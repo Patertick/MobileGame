@@ -29,7 +29,10 @@ public class DiggingActivity extends AppCompatActivity {
 
     SensorManager mSensorManager;
     Sensor mAccelerometerSensor;
+    Sensor mGeomagneticSensor;
     SensorEventListener mAccelerometerEventListener;
+    SensorEventListener mGeomagneticEventListener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,15 +54,14 @@ public class DiggingActivity extends AppCompatActivity {
 
 
         mSensorManager = (SensorManager) (getSystemService(SENSOR_SERVICE));
+        mGeomagneticSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
         mAccelerometerSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        if(mAccelerometerSensor == null){
+        if(mAccelerometerSensor == null || mGeomagneticSensor == null){
             int duration = Toast.LENGTH_SHORT;
-            Toast.makeText(this, "No accelerometer", duration);
+            Toast.makeText(this, "No accelerometer or magnetic field sensor", duration);
             Log.d("ERROR", "Device has no accelerometer sensor");
             return;
         }
-
-
 
         //ourView = (ImageView) findViewById(R.id.imageView);
 
@@ -71,12 +73,9 @@ public class DiggingActivity extends AppCompatActivity {
 
             @Override
             public void onSensorChanged(SensorEvent sensorEvent){
-                if(sensorEvent.values[1] > 5.0f) {
-                    diggingView.SetMotion("UP");
-                }
-                else if(sensorEvent.values[1] < -5.0f) {
-                    diggingView.SetMotion("DOWN");
-                }
+                diggingView.SetAccelerometerReadings(sensorEvent.values);
+                // update orientation values on change
+                diggingView.FindOrientation();
             }
 
             @Override
@@ -84,7 +83,22 @@ public class DiggingActivity extends AppCompatActivity {
 
             }
         };
+        mGeomagneticEventListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent sensorEvent) {
+                diggingView.SetMagnetometerReadings(sensorEvent.values);
+                // update orientation values on change
+                diggingView.FindOrientation();
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int i) {
+
+            }
+        };
+        mSensorManager.registerListener(mGeomagneticEventListener, mGeomagneticSensor, SensorManager.SENSOR_DELAY_NORMAL);
         mSensorManager.registerListener(mAccelerometerEventListener, mAccelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
         // get bitmaps
 
     }
@@ -104,7 +118,8 @@ public class DiggingActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mSensorManager.registerListener(mAccelerometerEventListener, mAccelerometerSensor, SensorManager.SENSOR_DELAY_FASTEST);
+        mSensorManager.registerListener(mAccelerometerEventListener, mAccelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(mGeomagneticEventListener, mGeomagneticSensor, SensorManager.SENSOR_DELAY_NORMAL);
         diggingView.Resume();
     }
 
@@ -112,6 +127,7 @@ public class DiggingActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         mSensorManager.unregisterListener(mAccelerometerEventListener);
+        mSensorManager.unregisterListener(mGeomagneticEventListener);
         diggingView.Pause();
     }
 

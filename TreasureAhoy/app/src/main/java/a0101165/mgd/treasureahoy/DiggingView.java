@@ -54,6 +54,12 @@ public class DiggingView extends SurfaceView implements Runnable{
 
     String mCurrentMoveKey;
 
+    float[] mMagnetometerReadings;
+
+    float[] mAccelerometerReadings;
+
+    float[] mOrientationValue;
+
     public DiggingView(Context context, int screenWidth, int screenHeight, int savedDistance){
         super(context);
         mContext = context;
@@ -275,5 +281,46 @@ public class DiggingView extends SurfaceView implements Runnable{
         }
     }
 
+    public void SetAccelerometerReadings(float[] newValues){
+        mAccelerometerReadings = newValues;
+    }
+
+    public void SetMagnetometerReadings(float[] newValues){
+        mMagnetometerReadings = newValues;
+    }
+
+    public void FindOrientation() {
+
+        if(mAccelerometerReadings == null || mMagnetometerReadings == null) return;
+        float[] rotationMatrix = new float[9];
+        // find rotation matrix from magnetometer & accelerometer readings
+        SensorManager.getRotationMatrix(rotationMatrix, null, mAccelerometerReadings, mMagnetometerReadings);
+
+        float[] orientationValues = new float[3];
+        SensorManager.getOrientation(rotationMatrix, orientationValues);
+
+        mOrientationValue = orientationValues;
+
+        ComputePhonePosition();
+
+    }
+
+    public void ComputePhonePosition() {
+        if(mOrientationValue == null) return;
+
+        Log.e("Orientation Phone Log", Float.toString(mOrientationValue[0]) + " - Z");
+        Log.e("Orientation Phone Log", Float.toString(mOrientationValue[1]) + " - X");
+        Log.e("Orientation Phone Log", Float.toString(mOrientationValue[2]) + " - Y");
+
+
+        if(mOrientationValue[1] < 0){ // UP orientation
+            SetMotion("UP");
+            Log.e("Motion Log", "UP");
+        }
+        else if(mOrientationValue[1] > 0){ // DOWN orientation
+            SetMotion("DOWN");
+            Log.e("Motion Log", "DOWN");
+        }
+    }
 
 }
