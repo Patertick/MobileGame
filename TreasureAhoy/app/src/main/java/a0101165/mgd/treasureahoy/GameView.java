@@ -3,6 +3,7 @@ package a0101165.mgd.treasureahoy;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
+import android.graphics.Rect;
 import android.location.Location;
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -18,7 +19,9 @@ import android.view.SurfaceView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
+import java.util.TimeZone;
 
 public class GameView extends SurfaceView implements Runnable {
 
@@ -385,6 +388,8 @@ public class GameView extends SurfaceView implements Runnable {
         // simulation
         // run update functions of all saved entities
 
+
+
         // do player update first
         int numLaunchObjectsVisible = 0;
         int numObstacleObjectsVisible = 0;
@@ -438,6 +443,8 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void Draw() {
         if(mHolder.getSurface().isValid()){
+
+            mPaint.setAlpha(255);
             mCanvas = mHolder.lockCanvas();
             mCanvas.drawColor(Color.BLACK); // draw background
             // draw the entities
@@ -446,6 +453,14 @@ public class GameView extends SurfaceView implements Runnable {
             }
 
             mPlayer.Draw(mCanvas, mPaint, mScreenWidth, mScreenHeight);
+
+            mPaint.setColor(ComputeLocation());
+            mPaint.setAlpha(100);
+            Rect screen = new Rect(0, 0, mScreenWidth, mScreenHeight);
+
+            mCanvas.drawRect(screen, mPaint);
+
+
 
             mHolder.unlockCanvasAndPost(mCanvas);
         }
@@ -514,6 +529,36 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void UpdateLocation(Location newLocation) {
         mCurrentLocation = newLocation;
+    }
+
+    public int ComputeLocation(){
+        double timeDifference = mCurrentLocation.getLongitude() / 15;
+
+        if(timeDifference < -12) timeDifference += 12;
+        else if(timeDifference > 12) timeDifference -= 12;
+
+        double localStandardTime = (-0.0069 + (mCurrentLocation.getLatitude() * 0.00007)) % 24;
+
+
+
+        Date dt = new Date();
+
+        double currentHour = dt.getHours() + localStandardTime + timeDifference;
+
+        Log.e("Current Hour", Double.toString(currentHour));
+
+        // from fully dark to fully day (0 - 255)
+        if(currentHour > 0.0 && currentHour <= 12.0) return Color.argb
+                (255, (int)(0 + (255 * (currentHour / 12))),
+                        (int)(0 + (255 * (currentHour / 12))),
+                        (int)(0 + (255 * (currentHour / 12))));
+        // from fully day to fully dark (255 - 0)
+        else if(currentHour > 12.0 && currentHour <= 24.0) return Color.argb
+                (255, (int)(255 - (255 * (currentHour / 12))),
+                        (int)(255 - (255 * (currentHour / 12))),
+                        (int)(255 - (255 * (currentHour / 12))));
+
+        else return Color.argb(0, 255, 255, 255); // return no a colour with 0 alpha by default
     }
 
     //public int GetFPS() { return mFPS; }
