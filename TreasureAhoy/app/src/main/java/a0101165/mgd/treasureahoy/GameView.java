@@ -389,7 +389,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void Update() {
         if(mPlayer.mState == State.IslandReached) DiggingMiniGameStart();
-        if(mPlayer.mState == State.Dead) {
+        else if(mPlayer.mState == State.Dead) {
             Dead(); // return to menu if player is dead
             return;
         }
@@ -529,6 +529,7 @@ public class GameView extends SurfaceView implements Runnable {
                     mRestartFlag = true;
                     break;
                 }
+
                 if(mPlayer.mAttachedLaunchObject != null) {
                     mSoundPool.play(mSoundOcean, 1, 1, 0, 0, 1.0f);
                     mSoundPool.play(mSoundArgh, 1, 1, 0, 0, 1.0f);

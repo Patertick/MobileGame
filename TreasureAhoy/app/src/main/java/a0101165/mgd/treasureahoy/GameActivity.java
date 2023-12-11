@@ -43,6 +43,7 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.e("ERROR TRANSFER", "Calling game activity");
 
         Intent intent = getIntent();
         int value = intent.getIntExtra("Key", 0);
@@ -76,7 +77,7 @@ public class GameActivity extends AppCompatActivity {
         criteria.setCostAllowed(false);
         String bestProvider = locationManager.getBestProvider(criteria, true);
 
-
+        Log.e("ERROR TRANSFER", "Calling game activity");
 
         locationListener = new LocationListener() {
             @Override
