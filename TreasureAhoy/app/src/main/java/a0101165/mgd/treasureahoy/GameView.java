@@ -59,6 +59,7 @@ public class GameView extends SurfaceView implements Runnable {
     int mSoundIce = -1;
     int mSoundWood = -1;
     int mSoundOcean = -1;
+    boolean mRestartFlag;
 
     // functions
     public GameView(Context context, int screenWidth, int screenHeight, int newDistance) {
@@ -77,6 +78,8 @@ public class GameView extends SurfaceView implements Runnable {
         mObstacleObjectNumber = 2;
 
         mTreasureDistance = 6000;
+
+        mRestartFlag = false;
 
         // Sound
 
@@ -369,9 +372,11 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     public void Dead() {
-        Intent intent = new Intent(mContext, MainActivity.class);
-        intent.putExtra("Key", "Back to menu");
-        mContext.startActivity(intent);
+        if(mRestartFlag) {
+            Intent intent = new Intent(mContext, MainActivity.class);
+            intent.putExtra("Key", "Back To Menu");
+            mContext.startActivity(intent);
+        }
     }
 
     public void DiggingMiniGameStart() {
@@ -384,7 +389,10 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void Update() {
         if(mPlayer.mState == State.IslandReached) DiggingMiniGameStart();
-        if(mPlayer.mState == State.Dead) Dead(); // return to menu if player is dead
+        if(mPlayer.mState == State.Dead) {
+            Dead(); // return to menu if player is dead
+            return;
+        }
         // simulation
         // run update functions of all saved entities
 
@@ -443,25 +451,36 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void Draw() {
         if(mHolder.getSurface().isValid()){
-
             mPaint.setAlpha(255);
             mCanvas = mHolder.lockCanvas();
-            mCanvas.drawColor(Color.BLACK); // draw background
-            // draw the entities
-            for(int i = 0; i < mEntities.size(); i++) {
-                mEntities.get(i).Draw(mCanvas, mPaint, mScreenWidth, mScreenHeight);
+            if(mPlayer.mState == State.Dead){
+                mCanvas.drawColor(Color.BLACK);
+                mPaint.setColor(Color.WHITE);
+                mPaint.setTextSize(50);
+                mCanvas.drawText("Game over!", ((int)(mScreenWidth/2.5)), (mScreenHeight/8), mPaint);
+                mPaint.setTextSize(50);
+                mCanvas.drawText("Distance travelled = " + Float.toString(mPlayer.mDistanceTravelled), (mScreenWidth/4), (mScreenHeight/4), mPaint);
+                mPaint.setTextSize(50);
+                mCanvas.drawText("Touch anywhere on the screen to reset", (mScreenWidth/10), (mScreenHeight/2), mPaint);
             }
+            else {
+                mCanvas.drawColor(Color.BLACK); // draw background
+                // draw the entities
+                for (int i = 0; i < mEntities.size(); i++) {
+                    mEntities.get(i).Draw(mCanvas, mPaint, mScreenWidth, mScreenHeight);
+                }
 
-            mPlayer.Draw(mCanvas, mPaint, mScreenWidth, mScreenHeight);
+                mPlayer.Draw(mCanvas, mPaint, mScreenWidth, mScreenHeight);
 
-            mPaint.setColor(ComputeLocation());
-            mPaint.setAlpha(100);
-            Rect screen = new Rect(0, 0, mScreenWidth, mScreenHeight);
+                mPaint.setColor(ComputeLocation());
+                mPaint.setAlpha(100);
+                Rect screen = new Rect(0, 0, mScreenWidth, mScreenHeight);
 
-            mCanvas.drawRect(screen, mPaint);
+                mCanvas.drawRect(screen, mPaint);
 
 
 
+            }
             mHolder.unlockCanvasAndPost(mCanvas);
         }
     }
@@ -506,7 +525,10 @@ public class GameView extends SurfaceView implements Runnable {
     public boolean onTouchEvent(MotionEvent motionEvent) {
         switch(motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
-
+                if(mPlayer.mState == State.Dead){
+                    mRestartFlag = true;
+                    break;
+                }
                 if(mPlayer.mAttachedLaunchObject != null) {
                     mSoundPool.play(mSoundOcean, 1, 1, 0, 0, 1.0f);
                     mSoundPool.play(mSoundArgh, 1, 1, 0, 0, 1.0f);
@@ -554,9 +576,9 @@ public class GameView extends SurfaceView implements Runnable {
                         (int)(0 + (255 * (currentHour / 12))));
         // from fully day to fully dark (255 - 0)
         else if(currentHour > 12.0 && currentHour <= 24.0) return Color.argb
-                (255, (int)(255 - (255 * (currentHour / 12))),
-                        (int)(255 - (255 * (currentHour / 12))),
-                        (int)(255 - (255 * (currentHour / 12))));
+                (255, (int)(255 - (255 * ((currentHour - 12) / 12))),
+                        (int)(255 - (255 * ((currentHour - 12) / 12))),
+                        (int)(255 - (255 * ((currentHour - 12) / 12))));
 
         else return Color.argb(0, 255, 255, 255); // return no a colour with 0 alpha by default
     }
