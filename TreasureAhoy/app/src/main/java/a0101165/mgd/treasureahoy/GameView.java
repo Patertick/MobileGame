@@ -556,6 +556,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     public int ComputeLocation(){
+        if(mCurrentLocation == null) return Color.argb(0, 255, 255, 255);
         double timeDifference = mCurrentLocation.getLongitude() / 15;
 
         if(timeDifference < -12) timeDifference += 12;
@@ -567,6 +568,8 @@ public class GameView extends SurfaceView implements Runnable {
 
         Date dt = new Date();
 
+        if(dt == null) return Color.argb(0, 255, 255, 255);
+
         double currentHour = dt.getHours() + localStandardTime + timeDifference;
 
         Log.e("Current Hour", Double.toString(currentHour));
@@ -574,13 +577,17 @@ public class GameView extends SurfaceView implements Runnable {
         // from fully dark to fully day (0 - 255)
         if(currentHour > 0.0 && currentHour <= 12.0) {
             double currentColor = 0 + (255 * (currentHour / 12));
-            if(currentColor >= 0.0 && currentColor <= 255.0) return Color.argb(255, (int)(currentColor), (int)(currentColor), (int)(currentColor));
+            Log.e("Current Color", Double.toString(currentColor));
+            if(currentColor > 0.0 && currentColor < 255.0) return Color.argb(255, (int)(currentColor), (int)(currentColor), (int)(currentColor));
         }
         // from fully day to fully dark (255 - 0)
         else if(currentHour > 12.0 && currentHour <= 24.0) {
             double currentColor = 255 - (255 * ((currentHour - 12) / 12));
-            if(currentColor >= 0.0 && currentColor <= 255.0) return Color.argb(255, (int)(currentColor), (int)(currentColor), (int)(currentColor));
+            Log.e("Current Color", Double.toString(currentColor));
+            if(currentColor > 0.0 && currentColor < 255.0) return Color.argb(255, (int)(currentColor), (int)(currentColor), (int)(currentColor));
         }
+
+        Log.e("Current Color", "Nothing");
 
         return Color.argb(0, 255, 255, 255); // return white with 0 alpha by default
     }
