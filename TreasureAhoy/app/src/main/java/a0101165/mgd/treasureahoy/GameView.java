@@ -551,6 +551,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     public void UpdateLocation(Location newLocation) {
+        if(newLocation == null) return;
         mCurrentLocation = newLocation;
     }
 

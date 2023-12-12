@@ -82,7 +82,7 @@ public class GameActivity extends AppCompatActivity {
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                if(location == null) return;
+                //if(location == null) return;
                 gameView.UpdateLocation(location);
             }
 
