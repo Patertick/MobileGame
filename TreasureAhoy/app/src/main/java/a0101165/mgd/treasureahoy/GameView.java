@@ -572,17 +572,17 @@ public class GameView extends SurfaceView implements Runnable {
         Log.e("Current Hour", Double.toString(currentHour));
 
         // from fully dark to fully day (0 - 255)
-        if(currentHour > 0.0 && currentHour <= 12.0) return Color.argb
-                (255, (int)(0 + (255 * (currentHour / 12))),
-                        (int)(0 + (255 * (currentHour / 12))),
-                        (int)(0 + (255 * (currentHour / 12))));
+        if(currentHour > 0.0 && currentHour <= 12.0) {
+            double currentColor = 0 + (255 * (currentHour / 12));
+            if(currentColor >= 0.0 && currentColor <= 255.0) return Color.argb(255, (int)(currentColor), (int)(currentColor), (int)(currentColor));
+        }
         // from fully day to fully dark (255 - 0)
-        else if(currentHour > 12.0 && currentHour <= 24.0) return Color.argb
-                (255, (int)(255 - (255 * ((currentHour - 12) / 12))),
-                        (int)(255 - (255 * ((currentHour - 12) / 12))),
-                        (int)(255 - (255 * ((currentHour - 12) / 12))));
+        else if(currentHour > 12.0 && currentHour <= 24.0) {
+            double currentColor = 255 - (255 * ((currentHour - 12) / 12));
+            if(currentColor >= 0.0 && currentColor <= 255.0) return Color.argb(255, (int)(currentColor), (int)(currentColor), (int)(currentColor));
+        }
 
-        else return Color.argb(0, 255, 255, 255); // return no a colour with 0 alpha by default
+        return Color.argb(0, 255, 255, 255); // return white with 0 alpha by default
     }
 
     //public int GetFPS() { return mFPS; }
